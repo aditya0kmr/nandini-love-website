@@ -1,4 +1,4 @@
-// Gallery Page component with 3D carousel using GSAP rotations
+// Gallery Page with 3D carousel, auto-rotation, favorites, and lazy-loading
 import { useState, useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import './GalleryPage.css'
@@ -45,8 +45,39 @@ const galleryImages = [
 function GalleryPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedImage, setSelectedImage] = useState(null)
+  const [favorites, setFavorites] = useState([])
+  const [isAutoPlay, setIsAutoPlay] = useState(true)
+  const [loadedImages, setLoadedImages] = useState({})
   const carouselRef = useRef(null)
-  const slideRefs = useRef([])
+  const autoPlayRef = useRef(null)
+  const containerRef = useRef(null)
+
+  // Load favorites from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('favoritePhotos')
+    if (saved) {
+      setFavorites(JSON.parse(saved))
+    }
+  }, [])
+
+  // Auto-rotate carousel
+  useEffect(() => {
+    if (isAutoPlay && containerRef.current) {
+      autoPlayRef.current = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % galleryImages.length)
+      }, 4000)
+
+      return () => clearInterval(autoPlayRef.current)
+    } else {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current)
+    }
+  }, [isAutoPlay])
+
+  // Pause on hover
+  const handleMouseEnter = () => setIsAutoPlay(false)
+  const handleMouseLeave = () => setIsAutoPlay(true)
+  const handleTouchStart = () => setIsAutoPlay(false)
+  const handleTouchEnd = () => setIsAutoPlay(true)
 
   // 3D carousel rotation
   useEffect(() => {
@@ -68,6 +99,15 @@ function GalleryPage() {
   // Previous slide
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
+  }
+
+  // Toggle favorite
+  const toggleFavorite = (imageId) => {
+    const updated = favorites.includes(imageId)
+      ? favorites.filter(id => id !== imageId)
+      : [...favorites, imageId]
+    setFavorites(updated)
+    localStorage.setItem('favoritePhotos', JSON.stringify(updated))
   }
 
   // Open modal
@@ -99,6 +139,11 @@ function GalleryPage() {
     })
   }
 
+  // Handle image load for lazy-loading
+  const handleImageLoad = (id) => {
+    setLoadedImages(prev => ({ ...prev, [id]: true }))
+  }
+
   return (
     <div className="page gallery-page">
       {/* Header */}
@@ -109,11 +154,19 @@ function GalleryPage() {
       </section>
 
       {/* 3D Carousel */}
-      <section className="carousel-section">
+      <section 
+        className="carousel-section"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        ref={containerRef}
+      >
         <div className="carousel-container">
           <div className="carousel" ref={carouselRef}>
             {galleryImages.map((image, index) => {
               const angle = (index / galleryImages.length) * 360
+              const isFavorite = favorites.includes(image.id)
               return (
                 <div
                   key={image.id}
@@ -124,7 +177,27 @@ function GalleryPage() {
                   }}
                   onClick={() => openModal(image)}
                 >
-                  <img src={image.url} alt={image.caption} />
+                  {/* Lazy-loaded image */}
+                  <img
+                    src={image.url}
+                    alt={image.caption}
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(image.id)}
+                    className={loadedImages[image.id] ? 'loaded' : ''}
+                  />
+                  
+                  {/* Favorite button */}
+                  <button
+                    className={`favorite-btn ${isFavorite ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleFavorite(image.id)
+                    }}
+                    title="Add to favorites"
+                  >
+                    {isFavorite ? '❤️' : '🤍'}
+                  </button>
+
                   <div className="slide-caption">{image.caption}</div>
                 </div>
               )
@@ -163,6 +236,16 @@ function GalleryPage() {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>✕</button>
+            
+            {/* Favorite button in modal */}
+            <button
+              className={`modal-favorite ${favorites.includes(selectedImage.id) ? 'active' : ''}`}
+              onClick={() => toggleFavorite(selectedImage.id)}
+              title="Add to favorites"
+            >
+              {favorites.includes(selectedImage.id) ? '❤️ Saved' : '🤍 Save'}
+            </button>
+
             <div className="modal-image-container">
               <img src={selectedImage.url} alt={selectedImage.caption} />
             </div>
