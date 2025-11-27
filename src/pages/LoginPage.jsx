@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
 import './LoginPage.css'
 
 function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [isShaking, setIsShaking] = useState(false)
-  const [showHearts, setShowHearts] = useState(false)
   const navigate = useNavigate()
+  const cardRef = useRef(null)
+  const pageRef = useRef(null)
 
   // Check if already logged in
   useEffect(() => {
@@ -21,24 +22,48 @@ function LoginPage() {
     
     // Check password (nanniii for now)
     if (password === 'nanniii') {
-      // Success!
+      // Success - GSAP fade out animation
+      gsap.to(cardRef.current, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.6,
+        ease: 'power2.inOut',
+      })
+      
+      gsap.to(pageRef.current, {
+        backgroundColor: 'rgba(255, 107, 157, 0.1)',
+        duration: 0.6,
+        ease: 'power2.inOut',
+      })
+      
+      // Set localStorage and navigate
       localStorage.setItem('loggedIn', 'true')
-      setShowHearts(true)
       setError('')
       
-      // Navigate after brief celebration
+      // Navigate after animation
       setTimeout(() => {
         navigate('/home')
-      }, 1500)
+      }, 600)
     } else {
-      // Wrong password - show error and shake
+      // Wrong password - GSAP shake animation
       setError(getRandomErrorMessage())
-      setIsShaking(true)
       
-      // Remove shake after animation
-      setTimeout(() => {
-        setIsShaking(false)
-      }, 500)
+      // Shake animation using GSAP
+      gsap.to(cardRef.current, {
+        x: -10,
+        duration: 0.1,
+        repeat: 5,
+        yoyo: true,
+        ease: 'power2.out',
+      })
+      
+      // Pulse scale on shake
+      gsap.to(cardRef.current, {
+        boxShadow: '0 0 30px rgba(255, 107, 157, 0.8)',
+        duration: 0.15,
+        repeat: 5,
+        yoyo: true,
+      })
     }
   }
 
@@ -54,7 +79,7 @@ function LoginPage() {
   }
 
   return (
-    <div className="page login-page">
+    <div className="page login-page" ref={pageRef}>
       {/* Floating Hearts Background */}
       <div className="hearts-bg">
         {[...Array(10)].map((_, i) => (
@@ -63,7 +88,7 @@ function LoginPage() {
       </div>
 
       {/* Login Card */}
-      <div className={`glass-card login-card ${isShaking ? 'shake' : ''}`}>
+      <div className="glass-card login-card" ref={cardRef}>
         <div className="login-header">
           <span className="heart-icon">💖</span>
           <h1>For My Love</h1>
@@ -97,18 +122,6 @@ function LoginPage() {
           Hint: What do you call me? 🥰
         </p>
       </div>
-
-      {/* Success Hearts Animation */}
-      {showHearts && (
-        <div className="success-overlay">
-          <div className="success-hearts">
-            {[...Array(20)].map((_, i) => (
-              <span key={i} className="burst-heart">❤️</span>
-            ))}
-          </div>
-          <p className="success-text">Welcome, my love! 💖</p>
-        </div>
-      )}
     </div>
   )
 }
