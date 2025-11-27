@@ -1,9 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './TimelinePage.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const timelineData = [
   {
@@ -51,51 +46,8 @@ const timelineData = [
 ];
 
 function TimelinePage() {
-  const [cardRefs, setCardRefs] = useState([]);
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    // Initialize refs array
-    setCardRefs(arr => 
-      [...Array(timelineData.length)].map((_, i) => arr[i] || useRef(null))
-    );
-  }, []);
-
-  // Scroll trigger animations
-  useEffect(() => {
-    if (cardRefs.length === 0) return;
-    
-    cardRefs.forEach((ref, index) => {
-      if (ref.current) {
-        gsap.fromTo(
-          ref.current,
-          {
-            opacity: 0,
-            x: index % 2 === 0 ? -50 : 50
-          },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            scrollTrigger: {
-              trigger: ref.current,
-              start: 'top 80%',
-              end: 'top 20%',
-              scrub: 1,
-              markers: false
-            }
-          }
-        );
-      }
-    });
-    
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [cardRefs]);
-
   return (
-    <div className="page timeline-page" ref={containerRef}>
+    <div className="page timeline-page">
       <div className="timeline-header">
         <h1>💝 Our Beautiful Timeline</h1>
         <p>Every moment with you is a precious memory</p>
@@ -104,11 +56,6 @@ function TimelinePage() {
         {timelineData.map((item, index) => (
           <div
             key={item.id}
-            ref={el => {
-              if (cardRefs[index]) {
-                cardRefs[index].current = el;
-              }
-            }}
             className={`timeline-card ${index % 2 === 0 ? 'timeline-left' : 'timeline-right'}`}
           >
             <div className="timeline-icon">{item.icon}</div>
