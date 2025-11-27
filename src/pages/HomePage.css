@@ -1,0 +1,354 @@
+/* HomePage.css - Romantic story sections with parallax-inspired styling */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #2d1b4e 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+/* Floating particles background */
+.floating-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 182, 193, 0.4);
+  border-radius: 50%;
+  animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-30px) translateX(10px);
+    opacity: 0.8;
+  }
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 100px;
+  padding: 60px 20px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #c71585 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+  letter-spacing: 2px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: #ffb6d9;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.hero-decoration {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff69b4, transparent);
+  margin: 20px auto;
+}
+
+/* Story Sections Container */
+.story-sections {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+  max-width: 900px;
+  margin: 0 auto 100px;
+}
+
+/* Individual Story Section */
+.story-section {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  border-radius: 20px;
+  padding: 50px 40px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1);
+  transition: all 0.3s ease;
+}
+
+.story-section:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 182, 193, 0.4);
+  box-shadow: 0 12px 48px rgba(255, 20, 147, 0.2);
+  transform: translateY(-5px);
+}
+
+.section-number {
+  position: absolute;
+  top: -30px;
+  left: 40px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ff69b4, #c71585);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.15;
+}
+
+.section-emoji {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff69b4;
+  margin: 15px 0;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.section-text {
+  font-size: 1.05rem;
+  color: #e0c3e0;
+  line-height: 1.8;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
+}
+
+.section-accent {
+  position: absolute;
+  bottom: -20px;
+  right: 30px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+}
+
+/* CTA Section */
+.cta-section {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 182, 193, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: 2rem;
+  color: #ff69b4;
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cta-text {
+  font-size: 1.1rem;
+  color: #e0c3e0;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #ff69b4, #c71585);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+  font-family: 'Poppins', sans-serif;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.5);
+}
+
+.cta-button:active {
+  transform: translateY(-1px);
+}
+
+/* Parallax accent elements */
+.parallax-accent-1 {
+  position: fixed;
+  top: 20%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(199, 21, 133, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.parallax-accent-2 {
+  position: fixed;
+  bottom: 10%;
+  left: -10%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .story-section {
+    padding: 40px 25px;
+  }
+
+  .section-number {
+    font-size: 2.5rem;
+    left: 25px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-text {
+    font-size: 0.95rem;
+  }
+
+  .section-accent {
+    width: 100px;
+    height: 100px;
+    right: 15px;
+    bottom: -15px;
+  }
+
+  .cta-section {
+    padding: 40px 20px;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+  }
+
+  .cta-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 20px 15px;
+  }
+
+  .hero-section {
+    margin-bottom: 60px;
+    padding: 40px 15px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .hero-decoration {
+    font-size: 1.5rem;
+  }
+
+  .story-sections {
+    gap: 40px;
+  }
+
+  .story-section {
+    padding: 30px 20px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .section-text {
+    font-size: 0.9rem;
+  }
+
+  .divider {
+    width: 40px;
+  }
+}
+
+/* Animation delays for staggered effect */
+.story-section:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.story-section:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.story-section:nth-child(3) {
+  animation-delay: 0.6s;
+}
