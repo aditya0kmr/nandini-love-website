@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/GamesPage.css';
-
+import './GamesPage.css';
 const GamesPage = () => {
   const [currentGame, setCurrentGame] = useState(null);
   const [quizScore, setQuizScore] = useState(0);
