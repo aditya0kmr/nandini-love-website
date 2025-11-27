@@ -208,6 +208,7 @@ function PoemsQuotesPage() {
   const [quotesShuffled, setQuotesShuffled] = useState([]);
   const [currentPoemIndex, setCurrentPoemIndex] = useState(0);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+    const [isFlipping, setIsFlipping] = useState({ poem: false, quote: false });
 
   // Initialize shuffled arrays once on component mount
   useEffect(() => {
@@ -215,14 +216,44 @@ function PoemsQuotesPage() {
     setQuotesShuffled(shuffleArray(quotes));
   }, []);
 
-  const nextPoem = () => {
-    setCurrentPoemIndex((prev) => (prev + 1) % poemsShuffled.length);
-  };
+const nextPoem = () => {
+    // Trigger flip animation
+    setIsFlipping({ ...isFlipping, poem: true });
+    
+    setCurrentPoemIndex((prev) => {
+      const next = prev + 1;
+      if (next >= poemsShuffled.length) {
+        const newShuffled = shuffleArray(poems);
+        setPoemsShuffled(newShuffled);
+        // Remove flip after animation
+        setTimeout(() => setIsFlipping(f => ({ ...f, poem: false })), 600);
+        return 0;
+      }
+      // Remove flip after animation
+      setTimeout(() => setIsFlipping(f => ({ ...f, poem: false })), 600);
+      return next;
+    });
+  }
+
 
   const nextQuote = () => {
-    setCurrentQuoteIndex((prev) => (prev + 1) % quotesShuffled.length);
-  };
-
+    // Trigger flip animation
+    setIsFlipping({ ...isFlipping, quote: true });
+    
+    setCurrentQuoteIndex((prev) => {
+      const next = prev + 1;
+      if (next >= quotesShuffled.length) {
+        const newShuffled = shuffleArray(quotes);
+        setQuotesShuffled(newShuffled);
+        // Remove flip after animation
+        setTimeout(() => setIsFlipping(f => ({ ...f, quote: false })), 600);
+        return 0;
+      }
+      // Remove flip after animation
+      setTimeout(() => setIsFlipping(f => ({ ...f, quote: false })), 600);
+      return next;
+    });
+  }
   const currentPoem = poemsShuffled[currentPoemIndex] || '';
   const currentQuote = quotesShuffled[currentQuoteIndex] || '';
 
@@ -237,7 +268,7 @@ function PoemsQuotesPage() {
         {/* Poems Section */}
         <div className="section poems-section">
           <div className="section-label">🖋️ Romantic Poem</div>
-          <div className="glass-card poem-card">
+                      <div className={`glass-card poem-card ${isFlipping.poem ? 'flipping' : ''}`}>
             <p className="poem-text">"{currentPoem}"</p>
             <button className="btn btn-primary" onClick={nextPoem}>
               Next Poem →
@@ -248,7 +279,7 @@ function PoemsQuotesPage() {
         {/* Quotes Section */}
         <div className="section quotes-section">
           <div className="section-label">💭 Inspiring Quote</div>
-          <div className="glass-card quote-card">
+                      <div className={`glass-card quote-card ${isFlipping.quote ? 'flipping' : ''}`}>
             <p className="quote-text">"{currentQuote}"</p>
             <button className="btn btn-primary" onClick={nextQuote}>
               Next Quote →
