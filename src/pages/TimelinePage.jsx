@@ -52,7 +52,6 @@ const timelineData = [
 
 function TimelinePage() {
   const [cardRefs, setCardRefs] = useState([]);
-  const [parallaxTransform, setParallaxTransform] = useState({});
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -60,42 +59,6 @@ function TimelinePage() {
     setCardRefs(arr => 
       [...Array(timelineData.length)].map((_, i) => arr[i] || useRef(null))
     );
-  }, []);
-
-  // Handle parallax on mouse movement
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const rotateX = (clientY - centerY) * 0.01;
-      const rotateY = (clientX - centerX) * 0.01;
-      
-      setParallaxTransform({
-        rotateX: -rotateX,
-        rotateY: rotateY
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  // Handle device tilt (accelerometer)
-  useEffect(() => {
-    const handleDeviceTilt = (e) => {
-      const { alpha, beta, gamma } = e;
-      setParallaxTransform({
-        rotateX: (beta || 0) * 0.3,
-        rotateY: (gamma || 0) * 0.3
-      });
-    };
-
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', handleDeviceTilt);
-    }
-    
-    return () => window.removeEventListener('deviceorientation', handleDeviceTilt);
   }, []);
 
   // Scroll trigger animations
@@ -137,9 +100,7 @@ function TimelinePage() {
         <h1>💝 Our Beautiful Timeline</h1>
         <p>Every moment with you is a precious memory</p>
       </div>
-      <div className="timeline-container" style={{
-            transform: `perspective(1000px) rotateX(${parallaxTransform.rotateX || 0}deg) rotateY(${parallaxTransform.rotateY || 0}deg)`,        transition: 'transform 0.3s ease-out'
-      }}>
+      <div className="timeline-container">
         {timelineData.map((item, index) => (
           <div
             key={item.id}
@@ -148,7 +109,7 @@ function TimelinePage() {
                 cardRefs[index].current = el;
               }
             }}
-            className={`timeline-card parallax-card ${index % 2 === 0 ? 'timeline-left' : 'timeline-right'}`}
+            className={`timeline-card ${index % 2 === 0 ? 'timeline-left' : 'timeline-right'}`}
           >
             <div className="timeline-icon">{item.icon}</div>
             <div className="glass-card timeline-content">
