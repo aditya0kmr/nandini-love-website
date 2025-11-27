@@ -1,0 +1,376 @@
+/* LoveLettersPage.css - Love letters with typewriter effect and glass cards */
+
+.letters-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #2d1b4e 100%);
+  position: relative;
+  overflow-x: hidden;
+  padding: 40px 20px;
+}
+
+/* Header Section */
+.letters-header {
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 20px;
+}
+
+.letters-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #c71585 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 15px 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.letters-subtitle {
+  font-size: 1.2rem;
+  color: #ffb6d9;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff69b4, transparent);
+  margin: 20px auto 0;
+}
+
+/* Mode Selection Section */
+.letter-mode-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  padding: 20px;
+}
+
+.mode-buttons-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mode-button {
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #ff69b4;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffb6d9;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(10px);
+}
+
+.mode-button:hover {
+  background: rgba(255, 105, 180, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 20, 147, 0.3);
+}
+
+.mode-button.active {
+  background: linear-gradient(135deg, #ff69b4, #c71585);
+  color: white;
+  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.5);
+}
+
+/* Letter Display Section */
+.letter-display-section {
+  max-width: 800px;
+  margin: 0 auto 50px;
+  min-height: 400px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 182, 193, 0.4);
+  box-shadow: 0 12px 48px rgba(255, 20, 147, 0.2);
+}
+
+/* Letter Card Specific */
+.letter-card {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.letter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 182, 193, 0.2);
+}
+
+.letter-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff69b4;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.letter-mode-badge {
+  padding: 8px 16px;
+  background: rgba(255, 105, 180, 0.2);
+  border: 1px solid #ff69b4;
+  border-radius: 20px;
+  color: #ffb6d9;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Letter Content */
+.letter-content {
+  min-height: 250px;
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.typewriter-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #e0c3e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  letter-spacing: 0.5px;
+}
+
+.cursor {
+  color: #ff69b4;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Letter Actions */
+.letter-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+.action-button {
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  backdrop-filter: blur(10px);
+}
+
+.save-button {
+  background: linear-gradient(135deg, #ff69b4, #c71585);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+}
+
+.save-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.5);
+}
+
+.next-button {
+  background: rgba(255, 105, 180, 0.15);
+  color: #ffb6d9;
+  border: 2px solid #ff69b4;
+}
+
+.next-button:hover {
+  background: rgba(255, 105, 180, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Placeholder Section */
+.placeholder-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.placeholder-card {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.placeholder-text {
+  font-size: 1.3rem;
+  color: #ffb6d9;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #ff69b4, #c71585);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  z-index: 1000;
+  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .letters-title {
+    font-size: 2.5rem;
+  }
+
+  .letters-subtitle {
+    font-size: 1rem;
+  }
+
+  .mode-buttons-container {
+    gap: 15px;
+  }
+
+  .mode-button {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .glass-card {
+    padding: 30px 20px;
+  }
+
+  .letter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .letter-title {
+    font-size: 1.5rem;
+  }
+
+  .typewriter-text {
+    font-size: 1rem;
+  }
+
+  .letter-content {
+    max-height: 300px;
+  }
+
+  .action-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .toast {
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    border-radius: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .letters-page {
+    padding: 20px 15px;
+  }
+
+  .letters-title {
+    font-size: 2rem;
+  }
+
+  .letters-header {
+    margin-bottom: 40px;
+  }
+
+  .glass-card {
+    padding: 20px 15px;
+  }
+
+  .letter-title {
+    font-size: 1.3rem;
+  }
+
+  .typewriter-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .letter-content {
+    min-height: 200px;
+    max-height: 250px;
+  }
+
+  .letter-actions {
+    flex-direction: column;
+  }
+
+  .action-button {
+    width: 100%;
+  }
+}
+
+/* Scrollbar styling for letter content */
+.letter-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.letter-content::-webkit-scrollbar-track {
+  background: rgba(255, 182, 193, 0.1);
+  border-radius: 10px;
+}
+
+.letter-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff69b4, #c71585);
+  border-radius: 10px;
+}
+
+.letter-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff1493, #8b008b);
+}
