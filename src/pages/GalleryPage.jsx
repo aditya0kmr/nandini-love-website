@@ -1,3 +1,4 @@
+// Gallery Page component with 3D carousel using GSAP rotations
 import { useState, useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import './GalleryPage.css'
