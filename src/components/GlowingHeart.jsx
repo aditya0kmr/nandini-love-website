@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import gsap from 'gsap'
 import './GlowingHeart.css'
 
 function GlowingHeart({ onReveal }) {
   const [revealed, setRevealed] = useState(false)
-  const heartRef = React.useRef(null)
+  const heartRef = useRef(null)
 
   const handleHeartClick = () => {
     if (revealed) return
