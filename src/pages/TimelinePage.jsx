@@ -126,3 +126,6 @@ function TimelinePage() {
 }
 
 export default TimelinePage;
+
+
+// Timeline component with CSS styling ready
