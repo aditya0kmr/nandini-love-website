@@ -33,7 +33,7 @@ function App() {
         <Route path="/games" element={<GamesPage />} />
         <Route path="/future" element={<FuturePage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
-                <Route path="/corner" element={<HerCornerPage />} />
+                <Route path="/her-corner" element={<HerCornerPage />} />
       </Routes>
     </div>
   )
