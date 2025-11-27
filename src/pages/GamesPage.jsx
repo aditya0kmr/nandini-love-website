@@ -1,3 +1,4 @@
+// Games Page Component
 import { useState } from 'react';
 import './GamesPage.css';
 
