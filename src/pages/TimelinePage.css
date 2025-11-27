@@ -210,3 +210,34 @@
     transform: translateY(0);
   }
 }
+
+
+/* Pulsing glow animation for 3D-style icons */
+.timeline-icon {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.3), inset 0 0 15px rgba(255, 105, 180, 0.1);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 105, 180, 0.6), inset 0 0 25px rgba(255, 105, 180, 0.2), 0 0 60px rgba(255, 20, 147, 0.3);
+    transform: scale(1.05);
+  }
+}
+
+/* Parallax motion effects */
+.timeline-card.parallax-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease-out;
+}
+
+.timeline-left.parallax-card {
+  transform: translateZ(-10px) rotateY(1.5deg);
+}
+
+.timeline-right.parallax-card {
+  transform: translateZ(-10px) rotateY(-1.5deg);
+}
