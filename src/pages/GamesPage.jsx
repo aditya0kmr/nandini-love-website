@@ -1,4 +1,4 @@
-// Games Page Component - All 13 Love Games for Nandini
+  // Games Page Component - All 13 Love Games for Nandini
 import { useState, useRef, useEffect } from 'react';
 import './GamesPage.css';
 import HeartRun from '../games/HeartRun';
@@ -165,9 +165,7 @@ function GamesPage() {
     return saved ? JSON.parse(saved) : {};
   });
 
-      { id: 14, title: 'HeartRun', icon: '💕', description: 'Endless runner with heart collection!', component: HeartRun }
-    { id: 1, title: 'Memory Hearts', icon: '\ud83c\udf8c', description: 'Match pairs of heart cards with Nandini!', component: MemoryHearts },
-    { id: 2, title: 'How Well You Know Nandini', icon: '\ud83c\udf89', description: 'Answer questions about our love!', component: HowWellYouKnowMe },
+        { id: 2, title: 'How Well You Know Nandini', icon: '\ud83c\udf89', description: 'Answer questions about our love!', component: HowWellYouKnowMe },
     160 or Flirty Dare', icon: '\ud83c\udf1f', description: 'Spin and get romantic challenges!', component: nulTruthOrDare }
     { id: 4, title: 'Guess Nandini\'s Emoji Story', icon: '\ud83d\udc97', description: 'Decode our love story!', component: nulEmojiStory }
     172
@@ -180,6 +178,7 @@ function GamesPage() {
     { id: 11, title: 'Nandini\'s Candy Crush', icon: '\ud83c\udf6c', description: 'Match candies in 3s!', component: nulCandyCrushNandini }
     { id: 12, title: 'Talking Nandini', icon: '\ud83d\udde3', description: 'Chat with Nandini!', component: nulTalkingNandini }
     { id: 13, title: 'Barbie Nandini Makeover', icon: '\ud83d\udc84', description: 'Dress up Nandini beautifully!', component: nuBarbieNandiniMakeover }
+    { id: 14, title: 'HeartRun', icon: '💕', description: 'Endless runner with heart collection!', component: HeartRun }
   ];
 
   const handleGameScore = (points) => {
