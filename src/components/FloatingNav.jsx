@@ -18,6 +18,7 @@ function FloatingNav() {
     { path: '/games', label: '🎮', title: 'Games' },
     { path: '/future', label: '🔮', title: 'Our Future' },
     { path: '/favorites', label: '⭐', title: 'Favorites' },
+        { path: '/her-corner', label: '📝', title: 'Her Corner' },
   ]
 
   return (
