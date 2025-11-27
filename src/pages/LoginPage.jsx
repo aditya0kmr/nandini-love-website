@@ -57,7 +57,7 @@ function LoginPage() {
     <div className="page login-page">
       {/* Floating Hearts Background */}
       <div className="hearts-bg">
-        {…Array(10).keys()].map((i) => (
+        {[...Array(10)].map((_, i) => (
           <span key={i} className="floating-heart">❤️</span>
         ))}
       </div>
@@ -102,7 +102,7 @@ function LoginPage() {
       {showHearts && (
         <div className="success-overlay">
           <div className="success-hearts">
-            {…Array(20).keys()].map((i) => (
+            {[...Array(20)].map((_, i) => (
               <span key={i} className="burst-heart">❤️</span>
             ))}
           </div>
