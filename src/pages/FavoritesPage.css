@@ -1,0 +1,71 @@
+.favorites-page {
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.favorites-page h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-family: 'Dancing Script', cursive;
+  background: linear-gradient(135deg, #ff6f91, #ff9671);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto 0;
+}
+
+.favorite-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 15px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.favorite-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(255, 107, 145, 0.2);
+}
+
+.fav-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.fav-content h3 {
+  margin: 10px 0 5px;
+  color: #ff9671;
+}
+
+.remove-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.2s;
+}
+
+.remove-fav-btn:hover {
+  transform: scale(1.2);
+}
+
+.empty-favorites {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
