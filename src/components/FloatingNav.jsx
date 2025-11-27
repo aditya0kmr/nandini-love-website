@@ -1,8 +1,9 @@
-import { Link, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import './FloatingNav.css'
 
 function FloatingNav() {
   const location = useLocation()
-  
+
   // Don't show nav on login page
   if (location.pathname === '/login' || location.pathname === '/') {
     return null
@@ -22,14 +23,17 @@ function FloatingNav() {
   return (
     <nav className="floating-nav">
       {navItems.map((item) => (
-        <Link
+        <NavLink
           key={item.path}
           to={item.path}
-          className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+          className={({ isActive }) => 
+            `nav-item ${isActive ? 'active' : ''}`
+          }
           title={item.title}
         >
-          {item.label}
-        </Link>
+          <span className="nav-emoji">{item.label}</span>
+          <span className="nav-tooltip">{item.title}</span>
+        </NavLink>
       ))}
     </nav>
   )
