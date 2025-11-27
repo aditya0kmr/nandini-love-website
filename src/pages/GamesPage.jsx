@@ -169,10 +169,11 @@ function GamesPage() {
     { id: 2, title: 'How Well You Know Nandini', icon: '\ud83c\udf89', description: 'Answer questions about our love!', component: HowWellYouKnowMe },
     160 or Flirty Dare', icon: '\ud83c\udf1f', description: 'Spin and get romantic challenges!', component: nulTruthOrDare }
     { id: 4, title: 'Guess Nandini\'s Emoji Story', icon: '\ud83d\udc97', description: 'Decode our love story!', component: nulEmojiStory }
-    { id: 5, title: 'Nandini\'s Photo Puzzle', icon: '\ud83d\udcf7', description: 'Solve romantic photo puzzles!', component: null },
-    { id: 6, title: 'This or That for Nandini', icon: '\u26a1', description: 'Choose between love options!', component: null },
-    { id: 7, title: 'Nandini\'s Timer Challenge', icon: '\ud83d\udd5b', description: 'Complete love challenges in time!', component: null },
-    { id: 8, title: 'Love Fortune Wheel', icon: '\ud83c\udf89', description: 'Spin romantic surprises!', component: null },
+    172
+      : 'Nandini\'s Photo Puzzle', icon: '\ud83d\udcf7', description: 'Solve romantic photo puzzles!', component: nulPhotoPuzzleNandini }
+    { id: 6, title: 'This or That for Nandini', icon: '\u26a1', description: 'Choose between love options!', component: nulThisOrThatNandini }
+    { id: 7, title: 'Nandini\'s Timer Challenge', icon: '\ud83d\udd5b', description: 'Complete love challenges in time!', component: nulLoveTimerChallenge }
+    { id: 8, title: 'Love Fortune Wheel', icon: '\ud83c\udf89', description: 'Spin romantic surprises!', component: nulLoveFortuneWheel }
     { id: 9, title: 'Nandini\'s Temple Run', icon: '\ud83c\udf18', description: 'Run with Nandini avoiding obstacles!', component: nulTempleRunNandini }
     { id: 10, title: 'Nandini\'s Subway Surfers', icon: '\ud83d\ude98', description: 'Surf the subway as Nandini!', component: nulSubwaySurfersNandini }
     { id: 11, title: 'Nandini\'s Candy Crush', icon: '\ud83c\udf6c', description: 'Match candies in 3s!', component: nulCandyCrushNandini }
@@ -517,5 +518,225 @@ const BarbieNandiniMakeover = ({ onClose, onScore }) => {
       <button className="back-btn" onClick={onClose}>Back to Games</button>
     </div>
   );
+
+// ==================== PART 3: GAMES 5-8 WITH COMPLETE LOGIC ====================
+// Photo Puzzle Game - Nandini
+const PhotoPuzzleNandini = ({ onClose, onScore }) => {
+  const [pieces, setPieces] = useState(Array(9).fill(0).map((_, i) => i).sort(() => Math.random() - 0.5));
+  const [completed, setCompleted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [moves, setMoves] = useState(0);
+
+  const handlePieceClick = (index) => {
+    if (completed) return;
+    const newPieces = [...pieces];
+    // Find adjacent piece to swap
+    const emptyIndex = pieces.indexOf(0);
+    if (Math.abs(index - emptyIndex) === 1 || Math.abs(index - emptyIndex) === 3) {
+      [newPieces[index], newPieces[emptyIndex]] = [newPieces[emptyIndex], newPieces[index]];
+      setPieces(newPieces);
+      setMoves(moves + 1);
+      
+      // Check if completed
+      const isComplete = newPieces.every((val, idx) => val === idx);
+      if (isComplete) {
+        setCompleted(true);
+        const newScore = Math.max(0, 200 - moves * 5);
+        setScore(newScore);
+        onScore(newScore);
+      }
+    }
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Nandini's Photo Puzzle!</h2>
+        <p>Moves: {moves} | Score: {score}</p>
+      </div>
+      <div className="puzzle-grid">
+        {pieces.map((piece, idx) => (
+          <div key={idx} className="puzzle-piece" onClick={() => handlePieceClick(idx)}>
+            {piece === 0 ? '' : piece}
+          </div>
+        ))}
+      </div>
+      {completed && <p className="win-message">Nandini is so beautiful! Puzzle complete!</p>}
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// This or That for Nandini
+const ThisOrThatNandini = ({ onClose, onScore }) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
+
+  const questions = [
+    { q: 'Nandini prefers: Coffee or Tea?', options: ['Coffee', 'Tea'], correctIndex: 0 },
+    { q: 'Nandini likes: Movies or Books?', options: ['Movies', 'Books'], correctIndex: 0 },
+    { q: 'Nandini chooses: Beach or Mountains?', options: ['Beach', 'Mountains'], correctIndex: 1 },
+    { q: 'Nandini wants: Adventure or Relaxation?', options: ['Adventure', 'Relaxation'], correctIndex: 0 },
+    { q: 'Nandini loves: Flowers or Chocolates?', options: ['Flowers', 'Chocolates'], correctIndex: 0 }
+  ];
+
+  const handleChoice = (index) => {
+    if (answered) return;
+    setAnswered(true);
+    const isCorrect = index === questions[currentQuestion].correctIndex;
+    const points = isCorrect ? 50 : 10;
+    setScore(score + points);
+    onScore(points);
+  };
+
+  const nextQuestion = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setAnswered(false);
+    } else {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>This or That for Nandini</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="this-or-that-container">
+        <p className="question-text">{questions[currentQuestion].q}</p>
+        <div className="options-row">
+          {questions[currentQuestion].options.map((option, idx) => (
+            <button key={idx} className="choice-btn" onClick={() => handleChoice(idx)} disabled={answered}>
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+      {answered && (
+        <button className="next-btn" onClick={nextQuestion}>
+          {currentQuestion === questions.length - 1 ? 'Done!' : 'Next'}
+        </button>
+      )}
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Love Timer Challenge - Nandini
+const LoveTimerChallenge = ({ onClose, onScore }) => {
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [score, setScore] = useState(0);
+  const [gameActive, setGameActive] = useState(true);
+  const [currentChallenge, setCurrentChallenge] = useState(0);
+
+  const challenges = [
+    'Complete 10 pushups!',
+    'Do 20 jumping jacks!',
+    'Say I love Nandini 3 times!',
+    'Make a heart with your hands!',
+    'Do a spin!
+  ];
+
+  useEffect(() => {
+    if (!gameActive || timeLeft <= 0) {
+      setGameActive(false);
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft(t => t - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [gameActive, timeLeft]);
+
+  const completeChallenge = () => {
+    const newScore = score + 50;
+    setScore(newScore);
+    onScore(50);
+    setCurrentChallenge((currentChallenge + 1) % challenges.length);
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Love Timer Challenge!</h2>
+        <p>Time Left: {timeLeft}s | Score: {score}</p>
+      </div>
+      {gameActive ? (
+        <div className="challenge-container">
+          <p className="challenge-text">{challenges[currentChallenge]}</p>
+          <button className="complete-btn" onClick={completeChallenge}>Challenge Complete!</button>
+        </div>
+      ) : (
+        <div className="game-over">
+          <h3>Time's Up! Final Score: {score}</h3>
+          <p>You completed {Math.floor(score / 50)} challenges!</p>
+        </div>
+      )}
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Love Fortune Wheel - Nandini
+const LoveFortuneWheel = ({ onClose, onScore }) => {
+  const [spinning, setSpinning] = useState(false);
+  const [rotation, setRotation] = useState(0);
+  const [fortune, setFortune] = useState('');
+  const [score, setScore] = useState(0);
+
+  const fortunes = [
+    'Your love is eternal!',
+    'Nandini is your soulmate!',
+    'Forever together!',
+    'Love conquers all!',
+    'You are meant for each other!',
+    'Nandini loves you forever!',
+    'Your bond is unbreakable!',
+    'True love forever!'
+  ];
+
+  const spinWheel = () => {
+    if (spinning) return;
+    setSpinning(true);
+    const newRotation = rotation + (360 * 5 + Math.random() * 360);
+    setRotation(newRotation);
+    
+    setTimeout(() => {
+      const fortuneIndex = Math.floor((newRotation / 360) % fortunes.length);
+      setFortune(fortunes[fortuneIndex]);
+      const newScore = score + 100;
+      setScore(newScore);
+      onScore(100);
+      setSpinning(false);
+    }, 3000);
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Love Fortune Wheel!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="wheel-container">
+        <div className="fortune-wheel" style={{ transform: `rotate(${rotation}deg)` }}>
+          {fortunes.map((f, i) => (
+            <div key={i} className="fortune-segment" style={{ transform: `rotate(${(i * 360) / fortunes.length}deg)` }}>
+              {f.slice(0, 10)}
+            </div>
+          ))}
+        </div>
+      </div>
+      {fortune && <p className="fortune-text">Fortune: {fortune}</p>}
+      <button className="spin-btn" onClick={spinWheel} disabled={spinning}>
+        {spinning ? 'Spinning...' : 'SPIN THE WHEEL'}
+      </button>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
 };
 export default GamesPage;
