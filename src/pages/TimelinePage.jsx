@@ -138,8 +138,7 @@ function TimelinePage() {
         <p>Every moment with you is a precious memory</p>
       </div>
       <div className="timeline-container" style={{
-        transform: `perspective(1000px) rotateX(${parallaxTransform.rotateX}deg) rotateY(${parallaxTransform.rotateY}deg)`,
-        transition: 'transform 0.3s ease-out'
+            transform: `perspective(1000px) rotateX(${parallaxTransform.rotateX || 0}deg) rotateY(${parallaxTransform.rotateY || 0}deg)`,        transition: 'transform 0.3s ease-out'
       }}>
         {timelineData.map((item, index) => (
           <div
