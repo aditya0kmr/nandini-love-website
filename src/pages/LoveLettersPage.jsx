@@ -1,3 +1,4 @@
+// Love Letters component with sweet and flirty letter modes
 import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import './LoveLettersPage.css'
