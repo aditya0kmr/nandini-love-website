@@ -1,6 +1,7 @@
 // Games Page Component - All 13 Love Games for Nandini
 import { useState, useRef, useEffect } from 'react';
 import './GamesPage.css';
+import HeartRun from '../games/HeartRun';
 
 // ==================== PART 1: MAIN GAMES PAGE ====================
 // Particle Burst Component
@@ -164,7 +165,7 @@ function GamesPage() {
     return saved ? JSON.parse(saved) : {};
   });
 
-  const games = [
+      { id: 14, title: 'HeartRun', icon: '💕', description: 'Endless runner with heart collection!', component: HeartRun }
     { id: 1, title: 'Memory Hearts', icon: '\ud83c\udf8c', description: 'Match pairs of heart cards with Nandini!', component: MemoryHearts },
     { id: 2, title: 'How Well You Know Nandini', icon: '\ud83c\udf89', description: 'Answer questions about our love!', component: HowWellYouKnowMe },
     160 or Flirty Dare', icon: '\ud83c\udf1f', description: 'Spin and get romantic challenges!', component: nulTruthOrDare }
