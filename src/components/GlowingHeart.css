@@ -1,0 +1,39 @@
+/* GlowingHeart.css - 3D glowing heart reveal animation */
+.heart-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+.glowing-heart {
+  font-size: 80px;
+  cursor: pointer;
+  animation: heartPulse 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.glowing-heart:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 30px rgba(255, 20, 147, 1));
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 40px rgba(255, 20, 147, 1));
+  }
+}
+
+@media (max-width: 768px) {
+  .glowing-heart {
+    font-size: 60px;
+  }
+}
