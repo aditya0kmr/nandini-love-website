@@ -40,6 +40,7 @@ function HerCornerPage() {
             onChange={handleChange}
             placeholder="Write anything you feel...\nYour words are private and safe here 💕"
             className="corner-textarea"
+                    />
                     <div className="char-cou✏ Characters: {text.length}</div>
           />
           <div className="corner-status">{status}</div>
