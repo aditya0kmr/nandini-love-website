@@ -1,0 +1,68 @@
+.her-corner-page {
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.her-corner-page h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-family: 'Dancing Script', cursive;
+  background: linear-gradient(135deg, #ff6f91, #ff9671);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+
+.her-corner-page > p {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+}
+
+.corner-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.note-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+}
+
+.corner-textarea {
+  width: 100%;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.corner-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.corner-textarea:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 107, 145, 0.5);
+  box-shadow: 0 0 15px rgba(255, 107, 145, 0.2);
+}
+
+.corner-status {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 13px;
+  color: rgba(255, 107, 145, 0.8);
+  font-weight: 500;
+}
