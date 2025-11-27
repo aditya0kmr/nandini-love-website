@@ -1,240 +1,128 @@
-// Love Letters component with sweet and flirty letter modes and 3D heart reveal
-import { useState, useEffect, useRef } from 'react'
-import gsap from 'gsap'
-import GlowingHeart from '../components/GlowingHeart'
-import Confetti from '../components/Confetti'
-import './LoveLettersPage.css'
+import { useState, useEffect } from 'react'
+import { gsap } from 'gsap'
 
-const sweetLetters = [
- {
- id: 'sweet-1',
- title: 'A Day With You',
- content: 'Dear Nandini,\n\nEvery morning when I wake up and think about you, my heart smiles. The way you laugh at my silly jokes, the way you look at me with those eyes full of love—it makes me believe that I\'m the luckiest person in the world.\n\nI want to spend forever creating memories with you. Thank you for being my greatest blessing.\n\nForever yours,\nYour Love'
- },
- {
- id: 'sweet-2',
- title: 'Thank You For Loving Me',
- content: 'My Dearest Nandini,\n\nI never knew love could feel this way until I met you. Every moment with you feels like a beautiful dream that I never want to wake up from.\n\nYou\'ve brought so much light into my life. Your kindness, your warmth, your presence—it all means the world to me. I\'m grateful for every laugh, every hug, and every tender moment we share.\n\nWith all my love,\nYour Sweetheart'
- },
- {
- id: 'sweet-3',
- title: 'My Heart Belongs to You',
- content: 'Dearest Nandini,\n\nBefore you, I didn\'t know what it meant to truly love someone. But now I do. It\'s in the little things—the way you hold my hand, how you care for me, the dreams we build together.\n\nYou are my inspiration, my motivation, and my greatest joy. I promise to love you more with each passing day.\n\nForever and always,\nYour One and Only'
- },
- {
- id: 'sweet-4',
- title: 'In Your Arms',
- content: 'My Sweet Nandini,\n\nWhen I\'m with you, the world disappears. All that matters is the love between us. Your smile brightens even my darkest days. Your touch calms my troubled heart.\n\nI\'ve found my home in you. In your arms is where I want to be, always.\n\nYours completely,\nYour Love'
- },
- {
- id: 'sweet-5',
- title: 'You Are My Forever',
- content: 'My Beloved Nandini,\n\nI\'ve never been more sure of anything in my life. You are my forever. Not just for a moment, not just for a season, but for all the tomorrows ahead.\n\nWith you, I\'ve found true peace and unconditional love. Thank you for choosing me.\n\nForever devoted,\nYour Heart'
- }
-]
+const LettersPage = () => {
+  const [currentLetter, setCurrentLetter] = useState('')
+  const [mode, setMode] = useState('sweet') // 'sweet' or 'flirty'
+  const [loading, setLoading] = useState(false)
+  const [favorites, setFavorites] = useState([])
 
-const flirtyLetters = [
- {
- id: 'flirty-1',
- title: 'Guilty Pleasure',
- content: 'Hey Beautiful,\n\nI have a confession—I think about you way more than I should. That smile of yours? It\'s absolutely dangerous. And don\'t get me started on how you look at me... it makes my heart race every single time.\n\nI love the way you tease me, the way you bite your lip when you\'re laughing, how you get closer to me when we\'re talking. You drive me absolutely crazy in the best way possible.\n\nMissing you already,\nYour Admirer'
- },
- {
- id: 'flirty-2',
- title: 'Can\'t Get Enough',
- content: 'My Irresistible Nandini,\n\nYou\'re addictive. Seriously. One touch from you and I\'m completely captivated. The way your eyes light up when you see me, the way you laugh at my jokes... I could watch you all day.\n\nI love flirting with you. The way we play, the way we make each other blush—it makes me fall for you more deeply every single day.\n\nYours obsessively,\nYour Favorite Person'
- },
- {
- id: 'flirty-3',
- title: 'You Got Me',
- content: 'Nandini,\n\nI\'m totally caught up in you. The way you move, the way you laugh, that sparkle in your eyes—you\'ve completely bewitched me. I love how we can be silly together, how you make me feel alive and wanted.\n\nI love your playfulness, your confidence, the way you own every moment. You are absolutely breathtaking, and I\'m so lucky to call you mine.\n\nCompletely yours,\nYour Devoted One'
- },
- {
- id: 'flirty-4',
- title: 'You Make Me Want You',
- content: 'Dear Nandini,\n\nThere\'s something about you that drives me wild. Your charm, your wit, the way you make me feel... nobody does it like you do. I find myself constantly thinking about the next time I\'ll see you, the next time I\'ll hold you close.\n\nYou make me want to be better, to love harder, to cherish every single moment with you. The chemistry between us is undeniable, and I never want to let you go.\n\nDesperately yours,\nYour Love'
- },
- {
- id: 'flirty-5',
- title: 'My Weakness',
- content: 'Oh Nandini,\n\nYou\'re my greatest weakness. When you smile at me like that, I lose all control. When you get close to me, I can\'t think straight. You have this power over me that\'s absolutely intoxicating.\n\nI love everything about you—your boldness, your beauty, the way you make me feel like I\'m the only person in the world. You are my addiction, my obsession, my everything.\n\nForever captivated,\nYour Completely Smitten One'
- }
-]
+  // REAL LETTER DATA (no API needed)
+  const sweetLetters = [
+    "Nanniii, every moment with you feels like a dream. Your smile lights up my entire world. From the day we met as friends to now building our forever, you've been my everything. I love you more than words can express. ❤️ - Aadi",
+    "My beautiful Nanniii, your kindness and strength inspire me every single day. The trust we share is unbreakable. Thank you for choosing me, for loving me, for being my partner in this beautiful life. Forever yours. 💕",
+    "Nanniii, do you know what makes my heart skip a beat? It's the way you laugh when I say something silly. Your joy is contagious, and I fall in love with you more every single day. Let's keep laughing together forever. 🙋",
+    "To my beautiful Nanniii, thank you for being my rock, my comfort, my home. With you, I found not just love, but my soulmate. You make every ordinary moment extraordinary. I love you infinitely. 🎌",
+    "Nanniii, I never knew love could feel this right until I met you. You're my greatest blessing, my answer to prayers. Let's build a lifetime of beautiful memories together. You're everything to me. 🥰"
+  ]
 
-function LoveLettersPage() {
- const [currentLetter, setCurrentLetter] = useState(null)
- const [letterMode, setLetterMode] = useState(null)
- const [displayText, setDisplayText] = useState('')
- const [isTypewriting, setIsTypewriting] = useState(false)
- const [showConfetti, setShowConfetti] = useState(false)
- const [heartRevealed, setHeartRevealed] = useState(false)
- const letterRef = useRef(null)
- const typewriterIntervalRef = useRef(null)
+  const flirtyLetters = [
+    "Nanniii 😏, that smile of yours... it does things to me. The way you blush when I tease you? Irresistible. Can't wait to hold you close and whisper all the naughty things I love about you. Yours completely. 😘 - Aadi",
+    "Hey gorgeous, wearing my favorite dress tonight? Good, because I can't keep my eyes (or hands) off you. You make my heart race faster than anything else. Come closer... 💋",
+    "Nanniii, the way you look at me when we're alone... it drives me crazy in the best way. I want to feel your touch, taste your lips, and lose myself in your eyes all night long. 😎",
+    "I love you like fire loves heat. Every touch sends electricity through me. You're my addiction, my obsession, my everything. Tonight, let me show you how much I want you. 🔥",
+    "Nanniii baby, I can't stop thinking about you. The way your body fits perfectly against mine... I want you so badly. Let me be your fantasy tonight. All yours. Always. 🥵"
+  ]
 
- // Typewriter effect
- useEffect(() => {
- if (!currentLetter || !isTypewriting) return
- let charIndex = 0
- const fullText = currentLetter.content
- setDisplayText('')
- typewriterIntervalRef.current = setInterval(() => {
- if (charIndex < fullText.length) {
- setDisplayText((prev) => prev + fullText[charIndex])
- charIndex++
- } else {
- setIsTypewriting(false)
- clearInterval(typewriterIntervalRef.current)
- }
- }, 30)
- return () => clearInterval(typewriterIntervalRef.current)
- }, [currentLetter, isTypewriting])
+  const getRandomLetter = () => {
+    const letters = mode === 'sweet' ? sweetLetters : flirtyLetters
+    return letters[Math.floor(Math.random() * letters.length)]
+  }
 
- // Show random letter
- const showRandomLetter = (mode) => {
- const letters = mode === 'sweet' ? sweetLetters : flirtyLetters
- const randomIndex = Math.floor(Math.random() * letters.length)
- const letter = letters[randomIndex]
- setLetterMode(mode)
- setCurrentLetter(letter)
- setDisplayText('')
- setIsTypewriting(true)
- setShowConfetti(false)
+  const showLetter = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setCurrentLetter(getRandomLetter())
+      setLoading(false)
+      
+      // Confetti for flirty mode
+      if (mode === 'flirty') {
+        console.log('🎉 Flirty confetti!')
+      }
+    }, 800)
+  }
 
- // Trigger confetti for flirty mode
- if (mode === 'flirty') {
- setShowConfetti(true)
- setTimeout(() => setShowConfetti(false), 3000)
- }
+  useEffect(() => {
+    showLetter()
+  }, [mode])
 
- // GSAP animation for the letter card
- if (letterRef.current) {
- gsap.fromTo(
- letterRef.current,
- { opacity: 0, y: 30 },
- { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
- )
- }
- }
+  const saveFavorite = () => {
+    const id = Date.now()
+    const favorite = { id, text: currentLetter, mode, date: new Date().toLocaleDateString() }
+    
+    setFavorites(prev => [favorite, ...prev])
+    localStorage.setItem('letterFavorites', JSON.stringify([favorite, ...favorites]))
+    
+    // Toast animation
+    gsap.fromTo('.favorite-toast', 
+      { y: 50, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.5 }
+    )
+    setTimeout(() => {
+      gsap.to('.favorite-toast', { y: -50, opacity: 0, duration: 0.5 })
+    }, 3000)
+  }
 
- // Save letter to localStorage
- const saveLetter = () => {
- if (!currentLetter) return
- const savedLetters = JSON.parse(localStorage.getItem('savedLetters') || '[]')
- if (!savedLetters.includes(currentLetter.id)) {
- savedLetters.push(currentLetter.id)
- localStorage.setItem('savedLetters', JSON.stringify(savedLetters))
- }
- showToast(`Letter \"${currentLetter.title}\" saved! 💕`)
- }
+  return (
+    <div className="max-w-4xl mx-auto p-8 space-y-8">
+      {/* Mode Toggle */}
+      <div className="glass-card p-8 text-center">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text mb-8">
+          📈 Love Letters
+        </h1>
+        <div className="flex gap-4 justify-center">
+          <button
+            onClick={() => setMode('sweet')}
+            className={`px-8 py-4 rounded-2xl font-bold text-xl transition-all ${mode === 'sweet' ? 'bg-gradient-to-r from-pink-500 to-rose-500 shadow-2xl scale-105' : 'glass-card hover:scale-105'}`}
+          >
+            💕 Her Love Letters
+          </button>
+          <button
+            onClick={() => setMode('flirty')}
+            className={`px-8 py-4 rounded-2xl font-bold text-xl transition-all ${mode === 'flirty' ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-2xl scale-105' : 'glass-card hover:scale-105'}`}
+          >
+            😘 Flirty Letters
+          </button>
+        </div>
+      </div>
 
- // Toast notification
- const showToast = (message) => {
- const toast = document.createElement('div')
- toast.textContent = message
- toast.className = 'toast'
- document.body.appendChild(toast)
- gsap.fromTo(
- toast,
- { opacity: 0, y: 20 },
- { opacity: 1, y: 0, duration: 0.4 }
- )
- setTimeout(() => {
- gsap.to(toast, {
- opacity: 0,
- y: 20,
- duration: 0.4,
- onComplete: () => toast.remove()
- })
- }, 2500)
- }
+      {/* Letter Display */}
+      <div className="glass-card p-12 relative">
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-6xl animate-pulse">💖</div>
+          </div>
+        ) : (
+          <>
+            <div className="text-center mb-8">
+              <button
+                onClick={showLetter}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold rounded-xl hover:scale-105 shadow-xl mb-6"
+              >
+                ✨ New Letter
+              </button>
+            </div>
+            <div className="prose prose-lg max-w-3xl mx-auto text-xl leading-relaxed whitespace-pre-wrap text-white">
+              {currentLetter}
+            </div>
+            <div className="flex gap-4 mt-12 justify-center">
+              <button
+                onClick={saveFavorite}
+                className="px-12 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-xl rounded-2xl hover:scale-105 shadow-2xl"
+              >
+                💖 Save to Favorites
+              </button>
+            </div>
+          </>
+        )}
+      </div>
 
- return (
- <div className="page letters-page">
- {/* Hidden 3D Heart Reveal */}
- {!heartRevealed && (
- <GlowingHeart
- onReveal={() => setHeartRevealed(true)}
- />
- )}
-
- {/* Confetti for Flirty Mode */}
- {showConfetti && <Confetti />}
-
- {heartRevealed && (
- <>
- {/* Header Section */}
- <section className="letters-header">
- <h1 className="letters-title">💌 Love Letters</h1>
- <p className="letters-subtitle">Words from my heart to yours</p>
- <div className="divider"></div>
- </section>
-
- {/* Letter Mode Selection */}
- <section className="letter-mode-section">
- <div className="mode-buttons-container">
- <button
- className={`mode-button ${letterMode === 'sweet' ? 'active' : ''}`}
- onClick={() => showRandomLetter('sweet')}
- >
- 💕 Her Love Letters
- </button>
- <button
- className={`mode-button ${letterMode === 'flirty' ? 'active' : ''}`}
- onClick={() => showRandomLetter('flirty')}
- >
- 🔥 Flirty Letters
- </button>
- </div>
- </section>
-
- {/* Letter Display */}
- {currentLetter && (
- <section className="letter-display-section" ref={letterRef}>
- <div className="glass-card letter-card">
- <div className="letter-header">
- <h2 className="letter-title">{currentLetter.title}</h2>
- <span className="letter-mode-badge">
- {letterMode === 'sweet' ? '💕 Sweet' : '🔥 Flirty'}
- </span>
- </div>
- <div className="letter-content">
- <p className="typewriter-text">{displayText}</p>
- {!isTypewriting && displayText.length > 0 && (
- <span className="cursor">|</span>
- )}
- </div>
- <div className="letter-actions">
- <button
- className="action-button save-button"
- onClick={saveLetter}
- >
- 💾 Save this Letter
- </button>
- <button
- className="action-button next-button"
- onClick={() =>
- showRandomLetter(letterMode === 'sweet' ? 'sweet' : 'flirty')
- }
- >
- ➜ Next Letter
- </button>
- </div>
- </div>
- </section>
- )}
-
- {/* Placeholder */}
- {!currentLetter && (
- <section className="placeholder-section">
- <div className="glass-card placeholder-card">
- <p className="placeholder-text">Select a letter type to begin... 💭</p>
- </div>
- </section>
- )}
- </>
- )}
- </div>
- )
+      {/* Favorite Toast */}
+      <div className="favorite-toast fixed top-20 right-8 glass-card p-6 shadow-2xl hidden">
+        <p className="text-lg font-bold text-emerald-300">💖 Saved to your heart!</p>
+      </div>
+    </div>
+  )
 }
 
-export default LoveLettersPage
+export default LettersPage
