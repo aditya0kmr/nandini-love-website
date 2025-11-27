@@ -273,6 +273,7 @@ const nextPoem = () => {
             <button className="btn btn-primary" onClick={nextPoem}>
               Next Poem →
             </button>
+                        <button className="btn btn-favorite" onClick={() => {const fav = {text: currentPoem, type: 'poem', date: new Date().toLocaleString()}; let favs = JSON.parse(localStorage.getItem('favorites') || '[]'); favs.push(fav); localStorage.setItem('favorites', JSON.stringify(favs)); alert('Added to Favorites!');}}>⭐ Add to Favorites</button>
           </div>
         </div>
 
@@ -284,6 +285,7 @@ const nextPoem = () => {
             <button className="btn btn-primary" onClick={nextQuote}>
               Next Quote →
             </button>
+                        <button className="btn btn-favorite" onClick={() => {const fav = {text: currentQuote, type: 'quote', date: new Date().toLocaleString()}; let favs = JSON.parse(localStorage.getItem('favorites') || '[]'); favs.push(fav); localStorage.setItem('favorites', JSON.stringify(favs)); alert('Added to Favorites!');}}>⭐ Add to Favorites</button>
           </div>
         </div>
       </div>
