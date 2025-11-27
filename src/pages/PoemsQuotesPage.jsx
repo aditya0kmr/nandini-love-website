@@ -261,3 +261,6 @@ function PoemsQuotesPage() {
 }
 
 export default PoemsQuotesPage;
+
+
+// PoemsQuotesPage component with Fisher-Yates shuffle algorithm and CSS styling
