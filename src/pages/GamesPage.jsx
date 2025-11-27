@@ -167,17 +167,17 @@ function GamesPage() {
   const games = [
     { id: 1, title: 'Memory Hearts', icon: '\ud83c\udf8c', description: 'Match pairs of heart cards with Nandini!', component: MemoryHearts },
     { id: 2, title: 'How Well You Know Nandini', icon: '\ud83c\udf89', description: 'Answer questions about our love!', component: HowWellYouKnowMe },
-    { id: 3, title: 'Truth or Flirty Dare', icon: '\ud83c\udf1f', description: 'Spin and get romantic challenges!', component: null },
-    { id: 4, title: 'Guess Nandini\'s Emoji Story', icon: '\ud83d\udc97', description: 'Decode our love story!', component: null },
+    160 or Flirty Dare', icon: '\ud83c\udf1f', description: 'Spin and get romantic challenges!', component: nulTruthOrDare }
+    { id: 4, title: 'Guess Nandini\'s Emoji Story', icon: '\ud83d\udc97', description: 'Decode our love story!', component: nulEmojiStory }
     { id: 5, title: 'Nandini\'s Photo Puzzle', icon: '\ud83d\udcf7', description: 'Solve romantic photo puzzles!', component: null },
     { id: 6, title: 'This or That for Nandini', icon: '\u26a1', description: 'Choose between love options!', component: null },
     { id: 7, title: 'Nandini\'s Timer Challenge', icon: '\ud83d\udd5b', description: 'Complete love challenges in time!', component: null },
     { id: 8, title: 'Love Fortune Wheel', icon: '\ud83c\udf89', description: 'Spin romantic surprises!', component: null },
-    { id: 9, title: 'Nandini\'s Temple Run', icon: '\ud83c\udf18', description: 'Run with Nandini avoiding obstacles!', component: null },
-    { id: 10, title: 'Nandini\'s Subway Surfers', icon: '\ud83d\ude98', description: 'Surf the subway as Nandini!', component: null },
-    { id: 11, title: 'Nandini\'s Candy Crush', icon: '\ud83c\udf6c', description: 'Match candies in 3s!', component: null },
-    { id: 12, title: 'Talking Nandini', icon: '\ud83d\udde3', description: 'Chat with Nandini!', component: null },
-    { id: 13, title: 'Barbie Nandini Makeover', icon: '\ud83d\udc84', description: 'Dress up Nandini beautifully!', component: null }
+    { id: 9, title: 'Nandini\'s Temple Run', icon: '\ud83c\udf18', description: 'Run with Nandini avoiding obstacles!', component: nulTempleRunNandini }
+    { id: 10, title: 'Nandini\'s Subway Surfers', icon: '\ud83d\ude98', description: 'Surf the subway as Nandini!', component: nulSubwaySurfersNandini }
+    { id: 11, title: 'Nandini\'s Candy Crush', icon: '\ud83c\udf6c', description: 'Match candies in 3s!', component: nulCandyCrushNandini }
+    { id: 12, title: 'Talking Nandini', icon: '\ud83d\udde3', description: 'Chat with Nandini!', component: nulTalkingNandini }
+    { id: 13, title: 'Barbie Nandini Makeover', icon: '\ud83d\udc84', description: 'Dress up Nandini beautifully!', component: nuBarbieNandiniMakeover }
   ];
 
   const handleGameScore = (points) => {
@@ -221,4 +221,301 @@ function GamesPage() {
   );
 }
 
+
+
+// ==================== PART 2: REMAINING 11 GAMES ====================
+// Truth or Flirty Dare Game
+const TruthOrDare = ({ onClose, onScore }) => {
+  const [gameState, setGameState] = useState('spin');
+  const [currentChallenge, setCurrentChallenge] = useState(null);
+  const [score, setScore] = useState(0);
+
+  const challenges = [
+    'Kiss Nandinis hand romantically!',
+    'Compliment Nandini on 3 things!',
+    'Share your favorite memory with Nandini!',
+    'Tell Nandini why you love her!',
+    'Give Nandini a forehead kiss!',
+    'Dance with Nandini!'
+  ];
+
+  const spinWheel = () => {
+    const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+    setCurrentChallenge(challenge);
+    setGameState('challenge');
+    const newScore = score + 50;
+    setScore(newScore);
+    onScore(50);
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Truth or Flirty Dare with Nandini!</h2>
+        <p>Score: {score}</p>
+      </div>
+      {gameState === 'spin' && (
+        <div className="spin-container">
+          <p>Spin the wheel to get a romantic challenge!</p>
+          <button className="spin-btn" onClick={spinWheel}>SPIN WHEEL</button>
+        </div>
+      )}
+      {gameState === 'challenge' && (
+        <div className="challenge-container">
+          <div className="challenge-text">{currentChallenge}</div>
+          <button className="done-btn" onClick={() => setGameState('spin')}>Done! Spin Again</button>
+        </div>
+      )}
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Nandini's Temple Run Game
+const TempleRunNandini = ({ onClose, onScore }) => {
+  const [position, setPosition] = useState(150);
+  const [score, setScore] = useState(0);
+  const [gameRunning, setGameRunning] = useState(true);
+  const [obstacles, setObstacles] = useState([{ id: 1, x: 500 }]);
+
+  useEffect(() => {
+    if (!gameRunning) return;
+    const moveInterval = setInterval(() => {
+      setObstacles(prev => {
+        const updated = prev.map(o => ({ ...o, x: o.x - 15 }));
+        return updated.filter(o => o.x > -50).length > 0 ? updated.filter(o => o.x > -50) : [{ id: Math.random(), x: 500 }];
+      });
+      setScore(s => s + 5);
+      onScore(5);
+    }, 100);
+    return () => clearInterval(moveInterval);
+  }, [gameRunning, onScore]);
+
+  const handleJump = () => {
+    if (position === 150) {
+      setPosition(80);
+      setTimeout(() => setPosition(150), 300);
+    }
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Nandini's Temple Run!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="temple-run-area" onClick={handleJump}>
+        <div className="nandini-runner" style={{ bottom: position }}>{score >= 100 ? 'Nandini Running!' : 'Click to Jump!'}</div>
+        {obstacles.map(obs => (
+          <div key={obs.id} className="obstacle" style={{ right: obs.x }}>Obstacle</div>
+        ))}
+      </div>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Nandini's Subway Surfers Game
+const SubwaySurfersNandini = ({ onClose, onScore }) => {
+  const [position, setPosition] = useState(50);
+  const [score, setScore] = useState(0);
+  const [gameRunning, setGameRunning] = useState(true);
+
+  useEffect(() => {
+    if (!gameRunning) return;
+    const interval = setInterval(() => {
+      setScore(s => { 
+        const newScore = s + 10;
+        onScore(10);
+        return newScore;
+      });
+    }, 100);
+    return () => clearInterval(interval);
+  }, [gameRunning, onScore]);
+
+  const handleMove = (direction) => {
+    setPosition(p => {
+      if (direction === 'left' && p > 20) return p - 30;
+      if (direction === 'right' && p < 80) return p + 30;
+      return p;
+    });
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Nandini's Subway Surfers!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="subway-area">
+        <div className="nandini-surfer" style={{ left: position + '%' }}>Nandini Surfing!</div>
+      </div>
+      <div className="controls">
+        <button className="move-btn" onClick={() => handleMove('left')}>LEFT</button>
+        <button className="move-btn" onClick={() => handleMove('right')}>RIGHT</button>
+      </div>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Nandini's Candy Crush Game
+const CandyCrushNandini = ({ onClose, onScore }) => {
+  const [grid, setGrid] = useState(Array(16).fill(0).map(() => Math.floor(Math.random() * 5)));
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState(null);
+
+  const handleCellClick = (index) => {
+    if (selected === null) {
+      setSelected(index);
+    } else {
+      const newScore = score + 50;
+      setScore(newScore);
+      onScore(50);
+      setSelected(null);
+      setGrid(Array(16).fill(0).map(() => Math.floor(Math.random() * 5)));
+    }
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Nandini's Candy Crush!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="candy-grid">
+        {grid.map((cell, i) => (
+          <div 
+            key={i} 
+            className={`candy ${selected === i ? 'selected' : ''}`}
+            onClick={() => handleCellClick(i)}
+          >
+            {['C', 'H', 'E', 'A', 'R'][cell]}
+          </div>
+        ))}
+      </div>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Talking Nandini Game
+const TalkingNandini = ({ onClose, onScore }) => {
+  const [message, setMessage] = useState('');
+  const [response, setResponse] = useState('Hi! I love you so much!');
+  const [score, setScore] = useState(0);
+
+  const responses = [
+    'I love you so much!',
+    'You make me smile every day!',
+    'Forever with you, my love!',
+    'You are my happiness!',
+    'I miss you already!',
+    'Let\'s be together forever!'
+  ];
+
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      const newResponse = responses[Math.floor(Math.random() * responses.length)];
+      setResponse(newResponse);
+      const newScore = score + 25;
+      setScore(newScore);
+      onScore(25);
+      setMessage('');
+    }
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Chat with Nandini!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="chat-container">
+        <div className="message nandini-message">Nandini: {response}</div>
+        <input 
+          type="text" 
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type your message..."
+          className="chat-input"
+        />
+        <button className="send-btn" onClick={handleSendMessage}>Send</button>
+      </div>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
+
+// Barbie Nandini Makeover Game
+const BarbieNandiniMakeover = ({ onClose, onScore }) => {
+  const [outfit, setOutfit] = useState({ dress: 'pink', shoes: 'heels', hair: 'long' });
+  const [score, setScore] = useState(0);
+
+  const dresses = ['Pink', 'Red', 'Blue', 'Purple', 'Gold'];
+  const shoesList = ['Heels', 'Flats', 'Boots', 'Sneakers'];
+  const hairstyles = ['Long', 'Short', 'Curly', 'Wavy'];
+
+  const changeDress = (dress) => {
+    setOutfit({ ...outfit, dress });
+    const newScore = score + 20;
+    setScore(newScore);
+    onScore(20);
+  };
+
+  const changeShoes = (shoes) => {
+    setOutfit({ ...outfit, shoes });
+    const newScore = score + 20;
+    setScore(newScore);
+    onScore(20);
+  };
+
+  const changeHair = (hair) => {
+    setOutfit({ ...outfit, hair });
+    const newScore = score + 20;
+    setScore(newScore);
+    onScore(20);
+  };
+
+  return (
+    <div className="game-container">
+      <div className="game-header">
+        <h2>Dress Up Nandini!</h2>
+        <p>Score: {score}</p>
+      </div>
+      <div className="makeover-container">
+        <div className="nandini-display">
+          Nandini in {outfit.dress} Dress, {outfit.shoes}, {outfit.hair} Hair!
+        </div>
+        <div className="options-section">
+          <div className="option-group">
+            <label>Choose Dress:</label>
+            {dresses.map(d => (
+              <button key={d} onClick={() => changeDress(d)} className={outfit.dress === d.toLowerCase() ? 'active' : ''}>
+                {d}
+              </button>
+            ))}
+          </div>
+          <div className="option-group">
+            <label>Choose Shoes:</label>
+            {shoesList.map(s => (
+              <button key={s} onClick={() => changeShoes(s)} className={outfit.shoes === s.toLowerCase() ? 'active' : ''}>
+                {s}
+              </button>
+            ))}
+          </div>
+          <div className="option-group">
+            <label>Choose Hairstyle:</label>
+            {hairstyles.map(h => (
+              <button key={h} onClick={() => changeHair(h)} className={outfit.hair === h.toLowerCase() ? 'active' : ''}>
+                {h}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+      <button className="back-btn" onClick={onClose}>Back to Games</button>
+    </div>
+  );
+};
 export default GamesPage;
