@@ -6,7 +6,6 @@ const GalleryPage = () => {
   const navigate = useNavigate();
   const containerRef = useRef(null);
   const carouselRef = useRef(null);
-  const [activeFrame, setActiveFrame] = useState('carousel');
   const [favorites, setFavorites] = useState([]);
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0);
 
@@ -25,13 +24,11 @@ const GalleryPage = () => {
   }, []);
 
   useEffect(() => {
-    if (activeFrame === 'carousel') {
-      const interval = setInterval(() => {
-        setCurrentCarouselImage((prev) => (prev + 1) % memories.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [activeFrame, memories.length]);
+    const interval = setInterval(() => {
+      setCurrentCarouselImage((prev) => (prev + 1) % memories.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [memories.length]);
 
   const toggleFavorite = useCallback((memoryId) => {
     setFavorites(prev => {
@@ -49,79 +46,62 @@ const GalleryPage = () => {
     <div className="gallery-page">
       <div className="page-hero">
         <h1 className="ink-reveal title-glow">Our Memories for nanniii ✨💖</h1>
-        <p className="hero-subtitle">Two ways to relive our love story...</p>
+        <p className="hero-subtitle">Scroll to see both frames with all memories...</p>
       </div>
 
-      <div className="frame-tabs">
-        <button 
-          className={`tab-btn ${activeFrame === 'carousel' ? 'active' : ''}`}
-          onClick={() => setActiveFrame('carousel')}
-        >
-          🎜 3D Carousel
-        </button>
-        <button 
-          className={`tab-btn ${activeFrame === 'liquid' ? 'active' : ''}`}
-          onClick={() => setActiveFrame('liquid')}
-        >
-          💧 Liquid Memories
-        </button>
-      </div>
-
-      {activeFrame === 'carousel' && (
-        <div className="carousel-frame">
-          <div ref={carouselRef} className="carousel-container">
-            <div className="carousel-orbit">
-              {memories.map((memory, index) => (
-                <CarouselItem
-                  key={memory.id}
-                  memory={memory}
-                  index={index}
-                  currentImage={currentCarouselImage}
-                  onFavoriteToggle={toggleFavorite}
-                  isFavorite={favorites.includes(memory.id)}
-                />
-              ))}
-            </div>
-            <div className="heart-orbs-container">
-              {[...Array(4)].map((_, i) => (
-                <HeartOrb key={i} delay={i * 0.5} />
-              ))}
-            </div>
-          </div>
-          
-          <div className="carousel-dots">
-            {memories.map((_, index) => (
-              <div
-                key={index}
-                className={`dot ${currentCarouselImage === index ? 'active' : ''}`}
-                onClick={() => setCurrentCarouselImage(index)}
-              />
-            ))}
-          </div>
-
-          <div className="carousel-info">
-            <div className="glass-card info-card">
-              <h3>{memories[currentCarouselImage]?.text}</h3>
-              <p>"Every moment with you glows brighter, nanniii" - aadi 💕</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {activeFrame === 'liquid' && (
-        <div className="liquid-frame">
-          <div ref={containerRef} className="blobs-grid-container">
-            {memories.map(memory => (
-              <LiquidBlobCard
+      <div className="frame-section frame-carousel-section">
+        <h2 className="frame-title">🎜 Frame 1: 3D Carousel</h2>
+        <div ref={carouselRef} className="carousel-container">
+          <div className="carousel-orbit">
+            {memories.map((memory, index) => (
+              <CarouselItem
                 key={memory.id}
                 memory={memory}
-                isFavorite={favorites.includes(memory.id)}
+                index={index}
+                currentImage={currentCarouselImage}
                 onFavoriteToggle={toggleFavorite}
+                isFavorite={favorites.includes(memory.id)}
               />
             ))}
           </div>
+          <div className="heart-orbs-container">
+            {[...Array(4)].map((_, i) => (
+              <HeartOrb key={i} delay={i * 0.5} />
+            ))}
+          </div>
         </div>
-      )}
+        
+        <div className="carousel-dots">
+          {memories.map((_, index) => (
+            <div
+              key={index}
+              className={`dot ${currentCarouselImage === index ? 'active' : ''}`}
+              onClick={() => setCurrentCarouselImage(index)}
+            />
+          ))}
+        </div>
+
+        <div className="carousel-info">
+          <div className="glass-card info-card">
+            <h3>{memories[currentCarouselImage]?.text}</h3>
+            <p>"Every moment with you glows brighter, nanniii" - aadi 💕</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="frame-section frame-liquid-section">
+        <h2 className="frame-title">💧 Frame 2: Liquid Blob Memories (No Overlapping)</h2>
+        <div ref={containerRef} className="blobs-grid-container">
+          {memories.map(memory => (
+            <LiquidBlobCard
+              key={memory.id}
+              memory={memory}
+              isFavorite={favorites.includes(memory.id)}
+              onFavoriteToggle={toggleFavorite}
+            />
+          ))}
+        </div>
+      </div>
 
       <div className="favorites-section">
         <h3 className="favorites-title">
@@ -146,10 +126,7 @@ const GalleryPage = () => {
       </button>
 
       <div className="instructions">
-        {activeFrame === 'carousel' 
-          ? '🔎 Hover to tilt • Click photo • Tap dots' 
-          : '💫 Click hearts • Hover for ripples • No overlaps!'
-        }
+        💫 Scroll to explore both frames • Click hearts to favorite • No overlapping!
       </div>
     </div>
   );
