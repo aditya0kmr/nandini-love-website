@@ -1,21 +1,18 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GalleryPage.css';
-import LiquidBlob from '../components/LiquidBlob';
 
 const GalleryPage = () => {
   const navigate = useNavigate();
-  const containerRef = useRef(null);
-  const [blobs, setBlobs] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
   const memories = [
-    { id: 1, text: 'Our First Beach Sunset 🌅', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', favorite: false },
-    { id: 2, text: "nanniii's Beautiful Smile 😍", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400', favorite: true },
-    { id: 3, text: 'First Date Magic ✨', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=400', favorite: false },
-    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400', favorite: false },
-    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=400', favorite: false },
-    { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400', favorite: true }
+    { id: 1, text: 'Our First Beach Sunset 🌅', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400' },
+    { id: 2, text: "nanniii's Beautiful Smile 😍", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400' },
+    { id: 3, text: 'First Date Magic ✨', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=400' },
+    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400' },
+    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=400' },
+    { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400' }
   ];
 
   useEffect(() => {
@@ -23,38 +20,16 @@ const GalleryPage = () => {
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
 
-  useEffect(() => {
-    if (containerRef.current && memories.length > 0) {
-      const newBlobs = memories.map((memory, index) => ({
-        id: memory.id,
-        x: 100 + index * 150 + Math.random() * 100,
-        y: 150 + index * 100 + Math.random() * 100,
-        size: 220 + Math.random() * 80,
-        image: memory.image,
-        text: memory.text,
-        isDragging: false,
-        favorite: favorites.includes(memory.id)
-      }));
-      setBlobs(newBlobs);
-    }
-  }, []);
-
-  const toggleFavorite = useCallback((blobId) => {
+  const toggleFavorite = useCallback((memoryId) => {
     setFavorites(prev => {
-      const newFavorites = prev.includes(blobId) 
-        ? prev.filter(id => id !== blobId)
-        : [...prev, blobId];
+      const newFavorites = prev.includes(memoryId) 
+        ? prev.filter(id => id !== memoryId)
+        : [...prev, memoryId];
       
       localStorage.setItem('galleryFavorites', JSON.stringify(newFavorites));
       return newFavorites;
     });
-
-    setBlobs(prev => prev.map(blob => 
-      blob.id === blobId 
-        ? { ...blob, favorite: !blob.favorite }
-        : blob
-    ));
-  }, [favorites]);
+  }, []);
 
   const nextPage = () => {
     navigate('/timeline');
@@ -64,17 +39,16 @@ const GalleryPage = () => {
     <div className="gallery-page">
       <div className="page-hero">
         <h1 className="ink-reveal title-3d">Our Liquified Memories 💧✨</h1>
-        <p className="hero-subtitle">Drag, click, and fall in love again, nanniii</p>
+        <p className="hero-subtitle">Scroll and cherish our beautiful moments together</p>
       </div>
 
-      <div ref={containerRef} className="blob-container">
-        {blobs.map(blob => (
-          <LiquidBlob
-            key={blob.id}
-            blob={blob}
-            containerRef={containerRef}
-            onFavoriteToggle={toggleFavorite}
-            memories={memories}
+      <div className="blob-container">
+        {memories.map(memory => (
+          <BlobCard
+            key={memory.id}
+            memory={memory}
+            isFavorite={favorites.includes(memory.id)}
+            onToggleFavorite={() => toggleFavorite(memory.id)}
           />
         ))}
       </div>
@@ -102,7 +76,29 @@ const GalleryPage = () => {
       </button>
 
       <div className="instructions">
-        💫 Drag blobs • Click for hearts • Hover for ripples
+        💫 Click hearts • Scroll to explore • Build your collection
+      </div>
+    </div>
+  );
+};
+
+const BlobCard = ({ memory, isFavorite, onToggleFavorite }) => {
+  const handleClick = (e) => {
+    e.stopPropagation();
+    onToggleFavorite();
+  };
+
+  return (
+    <div className="liquid-blob-card">
+      <div className="blob-wrapper">
+        <img src={memory.image} alt={memory.text} className="blob-image" loading="lazy" />
+        <div className="blob-overlay"></div>
+      </div>
+      <div className="blob-content">
+        <p className="blob-text">{memory.text}</p>
+        <div className="favorite-heart" onClick={handleClick}>
+          {isFavorite ? '💖' : '🤍'}
+        </div>
       </div>
     </div>
   );
