@@ -240,4 +240,30 @@
   .blob-text {
     font-size: 12px;
   }
+
+/* Flip Animation for Frame 2 Images */
+.blob-image {
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.blob-wrapper:hover .blob-image {
+  transform: rotateY(180deg) scale(1.05);
+}
+
+@keyframes flipCard {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: rotateY(90deg) scale(1.02);
+  }
+  100% {
+    transform: rotateY(180deg) scale(1);
+  }
+}
+
+.liquid-blob-card-grid:hover .blob-image {
+  animation: flipCard 0.6s ease-in-out;
+}
 }
