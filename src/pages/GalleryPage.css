@@ -61,3 +61,183 @@
 @keyframes ribbonShine { 0% { left: -100%; } 100% { left: 100%; } }
 .instructions { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); backdrop-filter: blur(15px); border: 2px solid rgba(255,107,129,0.4); border-radius: 30px; padding: 15px 30px; color: white; font-size: 15px; font-weight: 500; text-align: center; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 @media (max-width: 768px) { .carousel-orbit { width: 350px; height: 350px; } .carousel-item { width: 140px; height: 200px; } .frame-tabs { flex-direction: column; align-items: center; } .blob-container { height: 60vh; } .next-page-btn { bottom: 1.5rem; right: 1.5rem; padding: 1rem 2rem; } .favorite-heart { font-size: 18px; } .blob-text { font-size: 12px; } }
+
+
+                /* Frame Sections for Scrollable Layout */
+.frame-section {
+  width: 100%;
+  padding: 2rem 0;
+  margin: 0 auto;
+}
+
+.frame-carousel-section {
+  width: 100%;
+  height: auto;
+}
+
+.frame-liquid-section {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.frame-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin: 2rem 0 1.5rem 0;
+  background: linear-gradient(45deg, #ff6b81, #a29bfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Blob Grid Container - 3 Columns */
+.blobs-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.liquid-blob-card-grid {
+  width: 100%;
+  height: 280px;
+  position: relative;
+}
+
+.blob-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 107, 129, 0.1);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(162, 155, 254, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 107, 129, 0.2);
+  transition: all 0.4s ease;
+  animation: organicFloat 6s ease-in-out infinite;
+}
+
+.blob-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(255, 107, 129, 0.15) 0%, rgba(162, 155, 254, 0.08) 50%, rgba(255, 149, 147, 0.1) 100%);
+  border-radius: inherit;
+  animation: shimmer 3s ease-in-out infinite;
+  z-index: 1;
+}
+
+.blob-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(255, 107, 129, 0.4) 0%, rgba(255, 107, 129, 0.1) 50%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+  z-index: 1;
+}
+
+.blob-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  filter: brightness(1.15) contrast(1.15) saturate(1.25);
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.blob-wrapper:hover .blob-image {
+  transform: scale(1.05);
+}
+
+.blob-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 107, 129, 0.3), rgba(162, 155, 254, 0.2));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.blob-wrapper:hover .blob-overlay {
+  opacity: 1;
+}
+
+.blob-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.blob-text {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.4s ease;
+  z-index: 4;
+  text-align: center;
+}
+
+.blob-wrapper:hover .blob-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .blobs-grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .blobs-grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .blob-wrapper {
+    height: 240px;
+  }
+
+  .frame-title {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem 0;
+  }
+
+  .blob-text {
+    font-size: 12px;
+  }
+}
