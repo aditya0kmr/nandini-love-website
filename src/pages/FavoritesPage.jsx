@@ -60,7 +60,12 @@ function FavoritesPage() {
           </div>
         ) : (
           <div className="empty-favorites">
-            <p>🌟 No favorites yet. Mark your favorite moments to save them here!</p>
+            <p>✨ No favorites yet. Discover the magic!
+        <br />
+        Start by exploring: 💌 Letters • 📸 Gallery • 📝 Poems • 📅 Timeline
+        <br />
+        Then mark your favorite moments with a ❤️ to save them here!
+      </p>
           </div>
         )}
       </div>
