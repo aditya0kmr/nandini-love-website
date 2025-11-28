@@ -11,11 +11,12 @@ const GalleryPage = () => {
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0);
 
   const memories = [
-    { id: 1, text: 'Our First Beach Sunset 🌅 nanniii', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', carouselAngle: 0 },
-    { id: 2, text: "nanniii's Beautiful Smile 😍 aadi", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400', carouselAngle: 72 },
-    { id: 3, text: 'First Date Magic ✨ Forever', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=400', carouselAngle: 144 },
-    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400', carouselAngle: 216 },
-    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=400', carouselAngle: 288 },
+    { id: 1, text: 'Our First Beach Sunset 🌅 nanniii', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500', carouselAngle: 0 },
+    { id: 2, text: "nanniii's Beautiful Smile 😍 aadi", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500', carouselAngle: 72 },
+    { id: 3, text: 'First Date Magic ✨ Forever', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=500', carouselAngle: 144 },
+    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=500', carouselAngle: 216 },
+    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=500', carouselAngle: 288 },
+    { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500', carouselAngle: 0 },
   ];
 
   useEffect(() => {
@@ -32,11 +33,11 @@ const GalleryPage = () => {
     }
   }, [activeFrame, memories.length]);
 
-  const toggleFavorite = useCallback((blobId) => {
+  const toggleFavorite = useCallback((memoryId) => {
     setFavorites(prev => {
-      const newFavorites = prev.includes(blobId) 
-        ? prev.filter(id => id !== blobId)
-        : [...prev, blobId];
+      const newFavorites = prev.includes(memoryId) 
+        ? prev.filter(id => id !== memoryId)
+        : [...prev, memoryId];
       localStorage.setItem('galleryFavorites', JSON.stringify(newFavorites));
       return newFavorites;
     });
@@ -109,9 +110,9 @@ const GalleryPage = () => {
 
       {activeFrame === 'liquid' && (
         <div className="liquid-frame">
-          <div ref={containerRef} className="blob-container">
+          <div ref={containerRef} className="blobs-grid-container">
             {memories.map(memory => (
-              <LiquidBlobMemory
+              <LiquidBlobCard
                 key={memory.id}
                 memory={memory}
                 isFavorite={favorites.includes(memory.id)}
@@ -147,7 +148,7 @@ const GalleryPage = () => {
       <div className="instructions">
         {activeFrame === 'carousel' 
           ? '🔎 Hover to tilt • Click photo • Tap dots' 
-          : '💫 Drag blobs • Click for hearts • Hover ripples'
+          : '💫 Click hearts • Hover for ripples • No overlaps!'
         }
       </div>
     </div>
@@ -155,15 +156,11 @@ const GalleryPage = () => {
 };
 
 const CarouselItem = ({ memory, index, currentImage, onFavoriteToggle, isFavorite }) => {
-  const itemRef = useRef(null);
-
   return (
     <div 
-      ref={itemRef}
       className={`carousel-item ${currentImage === index ? 'active' : ''}`}
       style={{ 
         transform: `rotateY(${memory.carouselAngle}deg) translateZ(300px)`,
-        '--hover-tilt': `${(index - currentImage) * 5}deg`
       }}
     >
       <div className="carousel-image-wrapper glass-card">
@@ -182,25 +179,26 @@ const CarouselItem = ({ memory, index, currentImage, onFavoriteToggle, isFavorit
   );
 };
 
-const LiquidBlobMemory = ({ memory, isFavorite, onFavoriteToggle }) => {
-  const elementRef = useRef(null);
+const LiquidBlobCard = ({ memory, isFavorite, onFavoriteToggle }) => {
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+    onFavoriteToggle(memory.id);
+  };
 
   return (
-    <div 
-      ref={elementRef}
-      className={`liquid-blob ${isFavorite ? 'favorite-active' : ''}`}
-      onClick={() => onFavoriteToggle(memory.id)}
-      style={{
-        left: `${100 + memory.id * 150 + Math.random() * 100}px`,
-        top: `${150 + memory.id * 100 + Math.random() * 100}px`,
-        width: '240px',
-        height: '240px',
-      }}
-    >
-      <img src={memory.image} alt={memory.text} className="blob-image" loading="lazy" />
-      <div className="blob-text">{memory.text}</div>
-      <div className="favorite-heart" onClick={() => onFavoriteToggle(memory.id)}>
-        {isFavorite ? '💖' : '🤍'}
+    <div className="liquid-blob-card-grid">
+      <div className="blob-wrapper">
+        <img src={memory.image} alt={memory.text} className="blob-image" loading="lazy" />
+        <div className="blob-overlay"></div>
+        <div className="blob-content">
+          <p className="blob-text">{memory.text}</p>
+          <div 
+            className={`favorite-heart ${isFavorite ? 'active' : ''}`}
+            onClick={handleFavoriteClick}
+          >
+            {isFavorite ? '💖' : '🤍'}
+          </div>
+        </div>
       </div>
     </div>
   );
