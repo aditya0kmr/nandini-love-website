@@ -1,263 +1,111 @@
-// Gallery Page with 3D carousel, auto-rotation, favorites, and lazy-loading
-import { useState, useRef, useEffect } from 'react'
-import gsap from 'gsap'
-import './GalleryPage.css'
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './GalleryPage.css';
+import LiquidBlob from '../components/LiquidBlob';
 
-const galleryImages = [
-  {
-    id: 1,
-    url: 'https://images.unsplash.com/photo-1516062423079-7ca13cdc7f5a?w=400&h=400&fit=crop',
-    caption: 'Our First Moment',
-    compliment: 'Your smile lights up my entire world 💕'
-  },
-  {
-    id: 2,
-    url: 'https://images.unsplash.com/photo-1518838773e15f75f4f7b87c6c1b61e9?w=400&h=400&fit=crop',
-    caption: 'Forever Together',
-    compliment: 'Every moment with you is precious ✨'
-  },
-  {
-    id: 3,
-    url: 'https://images.unsplash.com/photo-1544078751-58fee2d8a03b?w=400&h=400&fit=crop',
-    caption: 'Love in Every Frame',
-    compliment: 'You are my greatest masterpiece 🎨'
-  },
-  {
-    id: 4,
-    url: 'https://images.unsplash.com/photo-1519225421-b2110f6f1f38?w=400&h=400&fit=crop',
-    caption: 'Your Beauty',
-    compliment: 'You take my breath away every single day 😍'
-  },
-  {
-    id: 5,
-    url: 'https://images.unsplash.com/photo-1516192318423-f06f70a504f0?w=400&h=400&fit=crop',
-    caption: 'Perfect Together',
-    compliment: 'With you, everything feels right 💖'
-  },
-  {
-    id: 6,
-    url: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=400&fit=crop',
-    caption: 'My Heart',
-    compliment: 'You are my reason to smile 🌟'
-  }
-]
+const GalleryPage = () => {
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const [blobs, setBlobs] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
-function GalleryPage() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [favorites, setFavorites] = useState([])
-  const [isAutoPlay, setIsAutoPlay] = useState(true)
-  const [loadedImages, setLoadedImages] = useState({})
-  const carouselRef = useRef(null)
-  const autoPlayRef = useRef(null)
-  const containerRef = useRef(null)
+  const memories = [
+    { id: 1, text: 'Our First Beach Sunset 🌅', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400', favorite: false },
+    { id: 2, text: "nanniii's Beautiful Smile 😍", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400', favorite: true },
+    { id: 3, text: 'First Date Magic ✨', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=400', favorite: false },
+    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400', favorite: false },
+    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=400', favorite: false },
+    { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400', favorite: true }
+  ];
 
-  // Load favorites from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('favoritePhotos')
-    if (saved) {
-      setFavorites(JSON.parse(saved))
-    }
-  }, [])
+    const saved = localStorage.getItem('galleryFavorites');
+    if (saved) setFavorites(JSON.parse(saved));
+  }, []);
 
-  // Auto-rotate carousel
   useEffect(() => {
-    if (isAutoPlay && containerRef.current) {
-      autoPlayRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % galleryImages.length)
-      }, 4000)
-
-      return () => clearInterval(autoPlayRef.current)
-    } else {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current)
+    if (containerRef.current && memories.length > 0) {
+      const newBlobs = memories.map((memory, index) => ({
+        id: memory.id,
+        x: 100 + index * 150 + Math.random() * 100,
+        y: 150 + index * 100 + Math.random() * 100,
+        size: 220 + Math.random() * 80,
+        image: memory.image,
+        text: memory.text,
+        isDragging: false,
+        favorite: favorites.includes(memory.id)
+      }));
+      setBlobs(newBlobs);
     }
-  }, [isAutoPlay])
+  }, []);
 
-  // Pause on hover
-  const handleMouseEnter = () => setIsAutoPlay(false)
-  const handleMouseLeave = () => setIsAutoPlay(true)
-  const handleTouchStart = () => setIsAutoPlay(false)
-  const handleTouchEnd = () => setIsAutoPlay(true)
+  const toggleFavorite = useCallback((blobId) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(blobId) 
+        ? prev.filter(id => id !== blobId)
+        : [...prev, blobId];
+      
+      localStorage.setItem('galleryFavorites', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
 
-  // 3D carousel rotation
-  useEffect(() => {
-    const angle = (currentIndex / galleryImages.length) * -360
-    if (carouselRef.current) {
-      gsap.to(carouselRef.current, {
-        rotationY: angle,
-        duration: 0.8,
-        ease: 'power2.inOut'
-      })
-    }
-  }, [currentIndex])
+    setBlobs(prev => prev.map(blob => 
+      blob.id === blobId 
+        ? { ...blob, favorite: !blob.favorite }
+        : blob
+    ));
+  }, [favorites]);
 
-  // Next slide
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % galleryImages.length)
-  }
-
-  // Previous slide
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
-  }
-
-  // Toggle favorite
-  const toggleFavorite = (imageId) => {
-    const updated = favorites.includes(imageId)
-      ? favorites.filter(id => id !== imageId)
-      : [...favorites, imageId]
-    setFavorites(updated)
-    localStorage.setItem('favoritePhotos', JSON.stringify(updated))
-  }
-
-  // Open modal
-  const openModal = (image) => {
-    setSelectedImage(image)
-    gsap.fromTo(
-      '.modal-overlay',
-      { opacity: 0 },
-      { opacity: 1, duration: 0.4 }
-    )
-    gsap.fromTo(
-      '.modal-content',
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration: 0.4, delay: 0.1 }
-    )
-  }
-
-  // Close modal
-  const closeModal = () => {
-    gsap.to('.modal-overlay', {
-      opacity: 0,
-      duration: 0.3,
-      onComplete: () => setSelectedImage(null)
-    })
-    gsap.to('.modal-content', {
-      opacity: 0,
-      scale: 0.8,
-      duration: 0.3
-    })
-  }
-
-  // Handle image load for lazy-loading
-  const handleImageLoad = (id) => {
-    setLoadedImages(prev => ({ ...prev, [id]: true }))
-  }
+  const nextPage = () => {
+    navigate('/timeline');
+  };
 
   return (
-    <div className="page gallery-page">
-      {/* Header */}
-      <section className="gallery-header">
-        <h1 className="gallery-title">📸 Our Gallery</h1>
-        <p className="gallery-subtitle">A visual celebration of our love</p>
-        <div className="divider"></div>
-      </section>
+    <div className="gallery-page">
+      <div className="page-hero">
+        <h1 className="ink-reveal title-3d">Our Liquified Memories 💧✨</h1>
+        <p className="hero-subtitle">Drag, click, and fall in love again, nanniii</p>
+      </div>
 
-      {/* 3D Carousel */}
-      <section 
-        className="carousel-section"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        ref={containerRef}
-      >
-        <div className="carousel-container">
-          <div className="carousel" ref={carouselRef}>
-            {galleryImages.map((image, index) => {
-              const angle = (index / galleryImages.length) * 360
-              const isFavorite = favorites.includes(image.id)
-              return (
-                <div
-                  key={image.id}
-                  className="carousel-slide"
-                  style={{
-                    transform: `rotateY(${angle}deg) translateZ(300px)`,
-                    opacity: Math.abs(currentIndex - index) < 2 ? 1 : 0.5
-                  }}
-                  onClick={() => openModal(image)}
-                >
-                  {/* Lazy-loaded image */}
-                  <img
-                    src={image.url}
-                    alt={image.caption}
-                    loading="lazy"
-                    onLoad={() => handleImageLoad(image.id)}
-                    className={loadedImages[image.id] ? 'loaded' : ''}
-                  />
-                  
-                  {/* Favorite button */}
-                  <button
-                    className={`favorite-btn ${isFavorite ? 'active' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      toggleFavorite(image.id)
-                    }}
-                    title="Add to favorites"
-                  >
-                    {isFavorite ? '❤️' : '🤍'}
-                  </button>
-
-                  <div className="slide-caption">{image.caption}</div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="carousel-controls">
-          <button className="carousel-btn prev-btn" onClick={prevSlide}>
-            ← Prev
-          </button>
-          <div className="slide-counter">
-            {currentIndex + 1} / {galleryImages.length}
-          </div>
-          <button className="carousel-btn next-btn" onClick={nextSlide}>
-            Next →
-          </button>
-        </div>
-      </section>
-
-      {/* Dots Indicator */}
-      <div className="carousel-dots">
-        {galleryImages.map((_, index) => (
-          <button
-            key={index}
-            className={`dot ${index === currentIndex ? 'active' : ''}`}
-            onClick={() => setCurrentIndex(index)}
-            aria-label={`Go to slide ${index + 1}`}
+      <div ref={containerRef} className="blob-container">
+        {blobs.map(blob => (
+          <LiquidBlob
+            key={blob.id}
+            blob={blob}
+            containerRef={containerRef}
+            onFavoriteToggle={toggleFavorite}
+            memories={memories}
           />
         ))}
       </div>
 
-      {/* Modal */}
-      {selectedImage && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>✕</button>
-            
-            {/* Favorite button in modal */}
-            <button
-              className={`modal-favorite ${favorites.includes(selectedImage.id) ? 'active' : ''}`}
-              onClick={() => toggleFavorite(selectedImage.id)}
-              title="Add to favorites"
-            >
-              {favorites.includes(selectedImage.id) ? '❤️ Saved' : '🤍 Save'}
-            </button>
-
-            <div className="modal-image-container">
-              <img src={selectedImage.url} alt={selectedImage.caption} />
-            </div>
-            <div className="modal-text">
-              <h2 className="modal-caption">{selectedImage.caption}</h2>
-              <p className="modal-compliment">{selectedImage.compliment}</p>
-            </div>
-          </div>
+      <div className="favorites-section">
+        <h3 className="favorites-title">
+          💖 Your Favorite Memories ({favorites.length})
+        </h3>
+        <div className="favorites-grid">
+          {favorites.map(id => {
+            const memory = memories.find(m => m.id === id);
+            return memory ? (
+              <div key={id} className="favorite-card">
+                <img src={memory.image} alt={memory.text} />
+                <span>{memory.text}</span>
+              </div>
+            ) : null;
+          })}
         </div>
-      )}
-    </div>
-  )
-}
+      </div>
 
-export default GalleryPage
+      <button className="next-page-btn ribbon-variant" onClick={nextPage}>
+        <span>→ Timeline Journey</span>
+        <div className="ribbon-trail"></div>
+      </button>
+
+      <div className="instructions">
+        💫 Drag blobs • Click for hearts • Hover for ripples
+      </div>
+    </div>
+  );
+};
+
+export default GalleryPage;
