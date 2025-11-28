@@ -16,6 +16,8 @@ const GalleryPage = () => {
     { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=500', carouselAngle: 216 },
     { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=500', carouselAngle: 288 },
     { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500', carouselAngle: 0 },
+        { id: 7, text: 'Sunset at the Mountains 🌅', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500', carouselAngle: 0 },
+        { id: 8, text: 'Starry Night Together ⭐', image: 'https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?w=500', carouselAngle: 0 }
   ];
 
   useEffect(() => {
