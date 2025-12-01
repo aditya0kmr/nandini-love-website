@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { gsap } from 'gsap'
 import './LoveLettersPage.css'
+import LetterToggle from '../components/LetterToggle'
 
 const LoveLettersPage = () => {
   const [revealed, setRevealed] = useState(false)
@@ -103,29 +104,7 @@ const LoveLettersPage = () => {
         </div>
       ) : (
         <div className="max-w-4xl mx-auto space-y-8">
-          <div className="glass-card p-6 rounded-3xl flex gap-4 justify-center">
-            <button
-              onClick={() => setMode('sweet')}
-              className={`px-8 py-3 rounded-2xl font-bold transition-all ${
-                mode === 'sweet'
-                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 shadow-2xl scale-105'
-                  : 'glass-card hover:scale-105'
-              }`}
-            >
-              💕 Her Love Letters
-            </button>
-            <button
-              onClick={() => setMode('flirty')}
-              className={`px-8 py-3 rounded-2xl font-bold transition-all ${
-                mode === 'flirty'
-                  ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-2xl scale-105'
-                  : 'glass-card hover:scale-105'
-              }`}
-            >
-              😘 Flirty Letters
-            </button>
-          </div>
-
+<LetterToggle mode={mode} onModeChange={setMode} />
           <div className="glass-card p-12 rounded-3xl min-h-80 flex flex-col justify-center">
             <div className="text-2xl leading-relaxed text-white whitespace-pre-wrap font-light">
               {displayedText}
