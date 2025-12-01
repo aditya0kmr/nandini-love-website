@@ -1,104 +1,169 @@
 /* ==========================================
-   FloatingNav Component Styles
-   Floating gradient emoji nav with hover effects
-   ========================================== */
+ FloatingNav Component Styles
+ Isometric Glassmorphism Navigation Panel
+ ========================================== */
 
-/* Main Navigation Container */
+/* Main Navigation Container - Isometric 3D Effect */
 .floating-nav {
   position: fixed;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg);
   display: flex;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: 10px;
+  padding: 16px 24px;
+  
+  /* Enhanced Glassmorphism Gradient */
   background: linear-gradient(
     135deg,
-    rgba(255, 107, 157, 0.15) 0%,
-    rgba(196, 69, 105, 0.15) 50%,
-    rgba(255, 107, 157, 0.15) 100%
+    rgba(255, 107, 157, 0.12) 0%,
+    rgba(196, 69, 105, 0.08) 50%,
+    rgba(255, 157, 180, 0.10) 100%
   );
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 107, 157, 0.3);
-  border-radius: 50px;
+  
+  /* Deep Glassmorphism Effect */
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  
+  /* Layered Borders */
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  
+  /* Isometric Shadow & Glow */
+  border-radius: 60px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(255, 107, 157, 0.2),
-    inset 0 0 20px rgba(255, 255, 255, 0.05);
+    /* Base shadow for depth */
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    /* Isometric left edge */
+    -8px 15px 35px rgba(0, 0, 0, 0.15),
+    /* Isometric top glow */
+    0 -10px 40px rgba(255, 107, 157, 0.15),
+    /* Pink glow */
+    0 0 30px rgba(255, 107, 157, 0.2),
+    /* Inner top shine */
+    inset 0 1px 30px rgba(255, 255, 255, 0.3),
+    /* Inner bottom shadow */
+    inset 0 -1px 20px rgba(0, 0, 0, 0.1);
+  
   z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Individual Nav Item */
+/* Individual Nav Item - Isometric Card */
 .nav-item {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 55%;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1.2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 0.8px solid rgba(0, 0, 0, 0.15);
+  border-right: 0.8px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
+  
+  /* Isometric 3D transform */
+  transform: translateZ(0);
+  box-shadow: 
+    inset 0 1px 15px rgba(255, 255, 255, 0.2),
+    0 10px 25px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(255, 107, 157, 0.05);
 }
 
 /* Emoji inside nav item */
 .nav-emoji {
-  font-size: 1.4rem;
-  transition: transform 0.3s ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  font-size: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.1);
 }
 
-/* Hover State - Scale + Glow */
+/* Hover State - Isometric Lift + Enhanced Glow */
 .nav-item:hover {
-  transform: scale(1.25);
-  background: rgba(255, 107, 157, 0.25);
-  border-color: rgba(255, 107, 157, 0.5);
+  transform: translateY(-8px) scale(1.15) rotateX(5deg);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 157, 0.3) 0%,
+    rgba(255, 107, 157, 0.15) 100%
+  );
+  border-color: rgba(255, 107, 157, 0.6);
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  border-right-color: rgba(0, 0, 0, 0.15);
+  
+  /* Enhanced Hover Glow */
   box-shadow: 
-    0 0 20px rgba(255, 107, 157, 0.5),
-    0 0 40px rgba(255, 107, 157, 0.3),
-    inset 0 0 15px rgba(255, 107, 157, 0.2);
+    inset 0 1px 20px rgba(255, 255, 255, 0.3),
+    0 15px 40px rgba(255, 107, 157, 0.35),
+    0 0 60px rgba(255, 107, 157, 0.25),
+    0 -5px 30px rgba(255, 107, 157, 0.15),
+    0 0 30px rgba(255, 157, 180, 0.2);
 }
 
 .nav-item:hover .nav-emoji {
-  transform: scale(1.1);
+  transform: scale(1.2) rotateZ(8deg);
+  filter: drop-shadow(0 0 12px rgba(255, 107, 157, 0.6));
+  text-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
 }
 
-/* Active State */
+/* Active State - Full Glassmorphic Shine */
 .nav-item.active {
-  background: linear-gradient(135deg, #ff6b9d, #c44569);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 157, 0.4) 0%,
+    rgba(196, 69, 105, 0.3) 50%,
+    rgba(255, 107, 157, 0.25) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.4);
+  border-bottom-color: rgba(0, 0, 0, 0.25);
+  border-right-color: rgba(0, 0, 0, 0.2);
+  
+  /* Active State Isometric Glow */
   box-shadow: 
-    0 0 25px rgba(255, 107, 157, 0.6),
-    0 0 50px rgba(255, 107, 157, 0.4),
-    inset 0 0 20px rgba(255, 255, 255, 0.2);
+    inset 0 1px 25px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 15px rgba(0, 0, 0, 0.1),
+    0 0 40px rgba(255, 107, 157, 0.6),
+    0 0 80px rgba(255, 107, 157, 0.3),
+    0 -8px 35px rgba(255, 107, 157, 0.2),
+    0 15px 45px rgba(0, 0, 0, 0.2);
 }
 
 .nav-item.active .nav-emoji {
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 25px rgba(255, 107, 157, 0.7));
+  text-shadow: 0 0 20px rgba(255, 107, 157, 0.6);
 }
 
 /* Tooltip */
 .nav-tooltip {
   position: absolute;
-  bottom: 60px;
+  bottom: 70px;
   left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.85);
+  transform: translateX(-50%) translateY(15px);
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.9);
   color: #fff;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 10px;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
   pointer-events: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 107, 157, 0.3);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(255, 107, 157, 0.2),
+    inset 0 1px 10px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .nav-tooltip::after {
@@ -107,33 +172,35 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.85);
+  border: 7px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.9);
+  filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.2));
 }
 
 .nav-item:hover .nav-tooltip {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(-5px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .floating-nav {
-    padding: 10px 15px;
-    gap: 5px;
+    padding: 12px 18px;
+    gap: 8px;
     bottom: 20px;
+    transform: translateX(-50%) perspective(800px) rotateX(1deg);
   }
-
+  
   .nav-item {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
   }
-
+  
   .nav-emoji {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
-
+  
   .nav-tooltip {
     display: none;
   }
@@ -141,16 +208,28 @@
 
 @media (max-width: 480px) {
   .floating-nav {
-    padding: 8px 12px;
-    gap: 3px;
+    padding: 10px 14px;
+    gap: 6px;
+    bottom: 15px;
   }
-
+  
   .nav-item {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
   }
-
+  
   .nav-emoji {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .floating-nav,
+  .nav-item,
+  .nav-emoji,
+  .nav-tooltip {
+    transition: none;
+    transform: none !important;
   }
 }
