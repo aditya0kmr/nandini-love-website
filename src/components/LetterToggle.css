@@ -1,0 +1,64 @@
+.letter-toggle-pill {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  padding: 8px;
+  max-width: fit-content;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.toggle-btn.inactive {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.toggle-btn.inactive:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, #ff69b4, #ff9a9e);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(255, 105, 180, 0.4);
+  transform: scale(1.05);
+}
+
+.toggle-btn.active:hover {
+  transform: scale(1.08);
+}
+
+.toggle-btn:focus-visible {
+  outline: 2px solid #ff9a9e;
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .toggle-btn {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle-btn {
+    transition: none;
+  }
+}
