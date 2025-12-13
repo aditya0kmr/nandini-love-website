@@ -1,0 +1,80 @@
+.scroll-to-top-container {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  z-index: 999;
+}
+
+.scroll-to-top-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b9d 0%, #c4456d 100%);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(255, 107, 157, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  animation: slideIn 0.5s ease-out;
+}
+
+.scroll-to-top-btn:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 12px 40px rgba(255, 107, 157, 0.5);
+  background: linear-gradient(135deg, #ff7bb3 0%, #d4556d 100%);
+}
+
+.scroll-to-top-btn:active {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .scroll-to-top-container {
+    bottom: 80px;
+    right: 15px;
+  }
+
+  .scroll-to-top-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .scroll-to-top-btn {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c4456d 100%);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top-btn {
+    animation: none;
+    transition: none;
+  }
+
+  .scroll-to-top-btn:hover {
+    transform: none;
+  }
+}
