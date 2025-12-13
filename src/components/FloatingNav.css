@@ -10,7 +10,8 @@
   left: 50%;
   transform: translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg);
   display: flex;
-  gap: 10px;
+  overflow: hidden;
+  gap: 6px;
   padding: 16px 24px;
   
   /* Enhanced Glassmorphism Gradient */
