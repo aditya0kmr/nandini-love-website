@@ -1,9 +1,10 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import './FloatingNav.css'
 import { useEffect, useRef, useState } from 'react'
 
 function FloatingNav() {
   const location = useLocation()
+  const navigate = useNavigate()
   const navRef = useRef(null)
   const itemsRef = useRef([])
   const [slideAmount, setSlideAmount] = useState(0)
@@ -12,6 +13,57 @@ function FloatingNav() {
   if (location.pathname === '/login' || location.pathname === '/') {
     return null
   }
+
+  const navItems = [
+    { path: '/home', label: '🏠', title: 'Home', key: '1' },
+    { path: '/letters', label: '💌', title: 'Love Letters', key: '2' },
+    { path: '/gallery', label: '📸', title: 'Gallery', key: '3' },
+    { path: '/timeline', label: '📅', title: 'Timeline', key: '4' },
+    { path: '/poems', label: '📝', title: 'Poems & Quotes', key: '5' },
+    { path: '/games', label: '🎮', title: 'Games', key: '6' },
+    { path: '/future', label: '🔮', title: 'Our Future', key: '7' },
+    { path: '/favorites', label: '⭐', title: 'Favorites', key: '8' },
+    { path: '/her-corner', label: '♥️', title: 'Her Corner', key: '9' }, 
+  ]
+
+  // Keyboard navigation handler
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const key = e.key.toLowerCase()
+      
+      // Press 'h' to go directly to Her Corner
+      if (key === 'h') {
+        navigate('/her-corner')
+        return
+      }
+      
+      // Press number keys (1-9) to jump to specific pages
+      const numKey = parseInt(key)
+      if (numKey >= 1 && numKey <= 9) {
+        const item = navItems[numKey - 1]
+        if (item) {
+          navigate(item.path)
+        }
+        return
+      }
+      
+      // Arrow keys for sequential navigation
+      const currentIndex = navItems.findIndex(item => item.path === location.pathname.replace('/#', ''))
+      
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        const nextIndex = (currentIndex + 1) % navItems.length
+        navigate(navItems[nextIndex].path)
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        const prevIndex = (currentIndex - 1 + navItems.length) % navItems.length
+        navigate(navItems[prevIndex].path)
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [location.pathname, navigate])
 
   // Mouse tracking effect for interactive sliding
   useEffect(() => {
@@ -37,7 +89,7 @@ function FloatingNav() {
       if (distance < influenceRadius) {
         // Calculate the angle and apply subtle tilt
         const angle = Math.atan2(distY, distX)
-        const proximity = 1 - (distance / influenceRadius) // 1 at center, 0 at edge
+        const proximity = 1 - (distance / influenceRadius)
         
         // Apply perspective transform based on mouse position
         const tiltX = Math.sin(angle) * proximity * 8
@@ -45,7 +97,6 @@ function FloatingNav() {
         const scaleEffect = 1 + proximity * 0.05
         
         // Calculate horizontal sliding for nav panel AND icons
-        // Range: -50px to +50px for more visible sliding effect
         const navSlideAmount = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * 50
         setSlideAmount(navSlideAmount)
         
@@ -106,18 +157,6 @@ function FloatingNav() {
     }
   }, [])
 
-  const navItems = [
-    { path: '/home', label: '🏠', title: 'Home' },
-    { path: '/letters', label: '💌', title: 'Love Letters' },
-    { path: '/gallery', label: '📸', title: 'Gallery' },
-    { path: '/timeline', label: '📅', title: 'Timeline' },
-    { path: '/poems', label: '📝', title: 'Poems & Quotes' },
-    { path: '/games', label: '🎮', title: 'Games' },
-    { path: '/future', label: '🔮', title: 'Our Future' },
-    { path: '/favorites', label: '⭐', title: 'Favorites' },
-    { path: '/her-corner', label: '♥️', title: 'Her Corner' }, 
-  ]
-
   return (
     <nav className="floating-nav" ref={navRef}>
       {navItems.map((item) => (
@@ -130,7 +169,7 @@ function FloatingNav() {
           className={({ isActive }) =>
             `nav-item ${isActive ? 'active' : ''}`
           }
-          title={item.title}
+          title={`${item.title} (Press ${item.key})`}
         >
           <span className="nav-emoji">{item.label}</span>
           <span className="nav-tooltip">{item.title}</span>
