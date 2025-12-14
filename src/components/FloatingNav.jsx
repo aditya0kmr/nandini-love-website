@@ -128,7 +128,7 @@ function FloatingNav() {
         const dynamicRadius = baseRadius + (itemProximity * maxRadiusChange)
 
         // Calculate magnetic pull
-        const magnetStrength = itemProximity * 20
+        const magnetStrength = itemProximity * 3
         const magnetX = (itemDistX / Math.max(itemDistance, 1)) * magnetStrength
         const magnetY = (itemDistY / Math.max(itemDistance, 1)) * magnetStrength
 
