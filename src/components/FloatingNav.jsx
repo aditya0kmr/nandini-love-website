@@ -1,11 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import './FloatingNav.css'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function FloatingNav() {
   const location = useLocation()
   const navRef = useRef(null)
   const itemsRef = useRef([])
+  const [slideAmount, setSlideAmount] = useState(0)
 
   // Don't show nav on login page
   if (location.pathname === '/login' || location.pathname === '/') {
@@ -43,12 +44,14 @@ function FloatingNav() {
         const tiltY = -Math.cos(angle) * proximity * 8
         const scaleEffect = 1 + proximity * 0.05
         
-        // Add horizontal sliding based on cursor X position
-        const slideAmount = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * 30
+        // Calculate horizontal sliding for nav panel AND icons
+        // Range: -50px to +50px for more visible sliding effect
+        const navSlideAmount = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * 50
+        setSlideAmount(navSlideAmount)
         
-        nav.style.transform = `translateX(calc(-50% + ${slideAmount}px)) perspective(1000px) rotateX(${2 + tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
+        nav.style.transform = `translateX(calc(-50% + ${navSlideAmount}px)) perspective(1000px) rotateX(${2 + tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
         
-        // Apply magnetic effect to individual items
+        // Apply magnetic effect to individual items WITH horizontal sliding
         itemsRef.current.forEach((item, index) => {
           if (!item) return
           
@@ -67,14 +70,17 @@ function FloatingNav() {
             const magnetX = (itemDistX / itemDistance) * itemProximity * 15
             const magnetY = (itemDistY / itemDistance) * itemProximity * 15
             
-            item.style.transform = `translateY(${magnetY}px) translateX(${magnetX}px) scale(${1 + itemProximity * 0.1})`
+            // Icons also slide horizontally with the same amount
+            item.style.transform = `translateY(${magnetY}px) translateX(${magnetX + navSlideAmount * 0.5}px) scale(${1 + itemProximity * 0.1})`
           } else {
-            item.style.transform = ''
+            // Icons still slide horizontally even without magnetic attraction
+            item.style.transform = `translateX(${navSlideAmount * 0.3}px)`
           }
         })
       } else {
         // Reset when mouse is far
         nav.style.transform = 'translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg)'
+        setSlideAmount(0)
         itemsRef.current.forEach(item => {
           if (item) item.style.transform = ''
         })
@@ -85,6 +91,7 @@ function FloatingNav() {
       if (navRef.current) {
         navRef.current.style.transform = 'translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg)'
       }
+      setSlideAmount(0)
       itemsRef.current.forEach(item => {
         if (item) item.style.transform = ''
       })
