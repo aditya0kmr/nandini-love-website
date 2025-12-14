@@ -7,7 +7,7 @@ function FloatingNav() {
   const navigate = useNavigate()
   const navRef = useRef(null)
   const itemsRef = useRef([])
-  const [slideAmount, setSlideAmount] = useState(0)
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   // Don't show nav on login page
   if (location.pathname === '/login' || location.pathname === '/') {
@@ -65,9 +65,11 @@ function FloatingNav() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [location.pathname, navigate])
 
-  // Mouse tracking effect for interactive sliding
+  // Circular mouse tracking effect
   useEffect(() => {
     const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+      
       if (!navRef.current) return
       
       const nav = navRef.current
@@ -78,73 +80,79 @@ function FloatingNav() {
       const mouseX = e.clientX
       const mouseY = e.clientY
       
-      // Calculate distance from mouse to nav center
+      // Calculate distance and angle from nav center
       const distX = mouseX - navCenterX
       const distY = mouseY - navCenterY
       const distance = Math.sqrt(distX * distX + distY * distY)
+      const angle = Math.atan2(distY, distX)
       
-      // Radius of influence - nav reacts when mouse is within 300px
-      const influenceRadius = 300
+      // Influence radius
+      const influenceRadius = 400
+      const proximity = Math.max(0, 1 - (distance / influenceRadius))
       
-      if (distance < influenceRadius) {
-        // Calculate the angle and apply subtle tilt
-        const angle = Math.atan2(distY, distX)
-        const proximity = 1 - (distance / influenceRadius)
+      // Nav panel slight tilt
+      const tiltX = Math.sin(angle) * proximity * 5
+      const tiltY = -Math.cos(angle) * proximity * 5
+      const scaleEffect = 1 + proximity * 0.02
+      
+      nav.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
+      
+      // Circular arrangement for items
+      const numItems = navItems.length
+      const baseRadius = 80 // Base radius of the circle
+      const maxRadiusChange = 40 // How much icons move from base radius
+      
+      itemsRef.current.forEach((item, index) => {
+        if (!item) return
         
-        // Apply perspective transform based on mouse position
-        const tiltX = Math.sin(angle) * proximity * 8
-        const tiltY = -Math.cos(angle) * proximity * 8
-        const scaleEffect = 1 + proximity * 0.05
+        // Calculate angle for this item in the circle
+        const itemAngle = (index / numItems) * Math.PI * 2
+        const itemX = Math.cos(itemAngle)
+        const itemY = Math.sin(itemAngle)
         
-        // Calculate horizontal sliding for nav panel AND icons
-        const navSlideAmount = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * 50
-        setSlideAmount(navSlideAmount)
+        // Get item's current world position
+        const itemRect = item.getBoundingClientRect()
+        const itemCenterX = itemRect.left + itemRect.width / 2
+        const itemCenterY = itemRect.top + itemRect.height / 2
         
-        nav.style.transform = `translateX(calc(-50% + ${navSlideAmount}px)) perspective(1000px) rotateX(${2 + tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
+        // Distance from mouse to this item
+        const itemDistX = mouseX - itemCenterX
+        const itemDistY = mouseY - itemCenterY
+        const itemDistance = Math.sqrt(itemDistX * itemDistX + itemDistY * itemDistY)
         
-        // Apply magnetic effect to individual items WITH horizontal sliding
-        itemsRef.current.forEach((item, index) => {
-          if (!item) return
-          
-          const itemRect = item.getBoundingClientRect()
-          const itemCenterX = itemRect.left + itemRect.width / 2
-          const itemCenterY = itemRect.top + itemRect.height / 2
-          
-          const itemDistX = mouseX - itemCenterX
-          const itemDistY = mouseY - itemCenterY
-          const itemDistance = Math.sqrt(itemDistX * itemDistX + itemDistY * itemDistY)
-          
-          const itemInfluenceRadius = 150
-          
-          if (itemDistance < itemInfluenceRadius) {
-            const itemProximity = 1 - (itemDistance / itemInfluenceRadius)
-            const magnetX = (itemDistX / itemDistance) * itemProximity * 15
-            const magnetY = (itemDistY / itemDistance) * itemProximity * 15
-            
-            // Icons also slide horizontally with the same amount
-            item.style.transform = `translateY(${magnetY}px) translateX(${magnetX + navSlideAmount * 0.5}px) scale(${1 + itemProximity * 0.1})`
-          } else {
-            // Icons still slide horizontally even without magnetic attraction
-            item.style.transform = `translateX(${navSlideAmount * 0.3}px)`
-          }
-        })
-      } else {
-        // Reset when mouse is far
-        nav.style.transform = 'translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg)'
-        setSlideAmount(0)
-        itemsRef.current.forEach(item => {
-          if (item) item.style.transform = ''
-        })
-      }
+        // Magnetic influence radius for each item
+        const itemInfluenceRadius = 200
+        const itemProximity = Math.max(0, 1 - (itemDistance / itemInfluenceRadius))
+        
+        // Calculate dynamic radius (items move outward when cursor is near)
+        const dynamicRadius = baseRadius + (itemProximity * maxRadiusChange)
+        
+        // Calculate magnetic pull
+        const magnetStrength = itemProximity * 20
+        const magnetX = (itemDistX / Math.max(itemDistance, 1)) * magnetStrength
+        const magnetY = (itemDistY / Math.max(itemDistance, 1)) * magnetStrength
+        
+        // Combine circular position with magnetic attraction
+        const circleX = itemX * dynamicRadius
+        const circleY = itemY * dynamicRadius
+        
+        const finalX = circleX + magnetX
+        const finalY = circleY + magnetY
+        
+        // Scale based on proximity
+        const itemScale = 1 + itemProximity * 0.15
+        
+        item.style.transform = `translate(${finalX}px, ${finalY}px) scale(${itemScale})`
+        item.style.transition = 'none'
+      })
     }
     
     const handleMouseLeave = () => {
       if (navRef.current) {
-        navRef.current.style.transform = 'translateX(-50%) perspective(1000px) rotateX(2deg) rotateZ(-1deg)'
+        navRef.current.style.transform = 'perspective(1000px) scale(1)'
       }
-      setSlideAmount(0)
       itemsRef.current.forEach(item => {
-        if (item) item.style.transform = ''
+        if (item) item.style.transform = 'translate(0, 0) scale(1)'
       })
     }
     
@@ -158,7 +166,7 @@ function FloatingNav() {
   }, [])
 
   return (
-    <nav className="floating-nav" ref={navRef}>
+    <nav className="floating-nav circular-nav" ref={navRef}>
       {navItems.map((item) => (
         <NavLink
           key={item.path}
@@ -167,7 +175,7 @@ function FloatingNav() {
           }}
           to={item.path}
           className={({ isActive }) =>
-            `nav-item ${isActive ? 'active' : ''}`
+            `nav-item circular-item ${isActive ? 'active' : ''}`
           }
           title={`${item.title} (Press ${item.key})`}
         >
