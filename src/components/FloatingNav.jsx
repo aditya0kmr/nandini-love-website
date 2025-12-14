@@ -43,7 +43,10 @@ function FloatingNav() {
         const tiltY = -Math.cos(angle) * proximity * 8
         const scaleEffect = 1 + proximity * 0.05
         
-        nav.style.transform = `translateX(-50%) perspective(1000px) rotateX(${2 + tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
+        // Add horizontal sliding based on cursor X position
+        const slideAmount = (mouseX - window.innerWidth / 2) / (window.innerWidth / 2) * 30
+        
+        nav.style.transform = `translateX(calc(-50% + ${slideAmount}px)) perspective(1000px) rotateX(${2 + tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
         
         // Apply magnetic effect to individual items
         itemsRef.current.forEach((item, index) => {
