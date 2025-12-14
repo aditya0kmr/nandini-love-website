@@ -136,10 +136,8 @@ function FloatingNav() {
         const circleX = itemX * dynamicRadius
         const circleY = itemY * dynamicRadius
 
-        const finalX = circleX + magnetX
-        const finalY = circleY + magnetY
-
-        // Scale based on proximity
+const finalX = 0
+        const finalY = 0
         const itemScale = 1 + itemProximity * 0.15
 
         item.style.transform = `translate(${finalX}px, ${finalY}px) scale(${itemScale})`
