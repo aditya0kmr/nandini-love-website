@@ -21,22 +21,22 @@ function FloatingNav() {
     { path: '/timeline', label: '📅', title: 'Timeline', key: '4' },
     { path: '/poems', label: '📝', title: 'Poems & Quotes', key: '5' },
     { path: '/games', label: '🎮', title: 'Games', key: '6' },
-    { path: '/future', label: '🔮', title: 'Our Future', key: '7' },
+    { path: '/future', label: '🌟', title: 'Our Future', key: '7' },
     { path: '/favorites', label: '⭐', title: 'Favorites', key: '8' },
-    { path: '/her-corner', label: '♥️', title: 'Her Corner', key: '9' }, 
+    { path: '/her-corner', label: '💗', title: 'Her Corner', key: '9' },
   ]
 
   // Keyboard navigation handler
   useEffect(() => {
     const handleKeyDown = (e) => {
       const key = e.key.toLowerCase()
-      
+
       // Press 'h' to go directly to Her Corner
       if (key === 'h') {
         navigate('/her-corner')
         return
       }
-      
+
       // Press number keys (1-9) to jump to specific pages
       const numKey = parseInt(key)
       if (numKey >= 1 && numKey <= 9) {
@@ -46,10 +46,10 @@ function FloatingNav() {
         }
         return
       }
-      
+
       // Arrow keys for sequential navigation
       const currentIndex = navItems.findIndex(item => item.path === location.pathname.replace('/#', ''))
-      
+
       if (e.key === 'ArrowRight') {
         e.preventDefault()
         const nextIndex = (currentIndex + 1) % navItems.length
@@ -60,7 +60,7 @@ function FloatingNav() {
         navigate(navItems[prevIndex].path)
       }
     }
-    
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [location.pathname, navigate])
@@ -69,84 +69,84 @@ function FloatingNav() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY })
-      
+
       if (!navRef.current) return
-      
+
       const nav = navRef.current
       const rect = nav.getBoundingClientRect()
       const navCenterX = rect.left + rect.width / 2
       const navCenterY = rect.top + rect.height / 2
-      
+
       const mouseX = e.clientX
       const mouseY = e.clientY
-      
+
       // Calculate distance and angle from nav center
       const distX = mouseX - navCenterX
       const distY = mouseY - navCenterY
       const distance = Math.sqrt(distX * distX + distY * distY)
       const angle = Math.atan2(distY, distX)
-      
+
       // Influence radius
       const influenceRadius = 400
       const proximity = Math.max(0, 1 - (distance / influenceRadius))
-      
+
       // Nav panel slight tilt
       const tiltX = Math.sin(angle) * proximity * 5
       const tiltY = -Math.cos(angle) * proximity * 5
       const scaleEffect = 1 + proximity * 0.02
-      
+
       nav.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg) scale(${scaleEffect})`
-      
+
       // Circular arrangement for items
       const numItems = navItems.length
       const baseRadius = 80 // Base radius of the circle
       const maxRadiusChange = 40 // How much icons move from base radius
-      
+
       itemsRef.current.forEach((item, index) => {
         if (!item) return
-        
+
         // Calculate angle for this item in the circle
         const itemAngle = (index / numItems) * Math.PI * 2
         const itemX = Math.cos(itemAngle)
         const itemY = Math.sin(itemAngle)
-        
+
         // Get item's current world position
         const itemRect = item.getBoundingClientRect()
         const itemCenterX = itemRect.left + itemRect.width / 2
         const itemCenterY = itemRect.top + itemRect.height / 2
-        
+
         // Distance from mouse to this item
         const itemDistX = mouseX - itemCenterX
         const itemDistY = mouseY - itemCenterY
         const itemDistance = Math.sqrt(itemDistX * itemDistX + itemDistY * itemDistY)
-        
+
         // Magnetic influence radius for each item
         const itemInfluenceRadius = 200
         const itemProximity = Math.max(0, 1 - (itemDistance / itemInfluenceRadius))
-        
+
         // Calculate dynamic radius (items move outward when cursor is near)
         const dynamicRadius = baseRadius + (itemProximity * maxRadiusChange)
-        
+
         // Calculate magnetic pull
         const magnetStrength = itemProximity * 20
         const magnetX = (itemDistX / Math.max(itemDistance, 1)) * magnetStrength
         const magnetY = (itemDistY / Math.max(itemDistance, 1)) * magnetStrength
-        
+
         // Combine circular position with magnetic attraction
         const circleX = itemX * dynamicRadius
         const circleY = itemY * dynamicRadius
-        
+
         const finalX = circleX + magnetX
         const finalY = circleY + magnetY
-        
+
         // Scale based on proximity
         const itemScale = 1 + itemProximity * 0.15
-        
+
         item.style.transform = `translate(${finalX}px, ${finalY}px) scale(${itemScale})`
         item.style.transition = 'none'
       })
     }
-    
+
     const handleMouseLeave = () => {
       if (navRef.current) {
         navRef.current.style.transform = 'perspective(1000px) scale(1)'
@@ -155,10 +155,10 @@ function FloatingNav() {
         if (item) item.style.transform = 'translate(0, 0) scale(1)'
       })
     }
-    
+
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseleave', handleMouseLeave)
-    
+
     return () => {
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseleave', handleMouseLeave)
