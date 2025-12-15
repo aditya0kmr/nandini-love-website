@@ -1,0 +1,12 @@
+# Image Assets Directory
+
+This folder holds all image assets for the Nandini Love Website.
+Created for STEP 2 image setup.
+
+Add the following 15 images here:
+
+- Gallery (8): gallery-1.jpg to gallery-8.jpg
+- Timeline (6): timeline-1.jpg to timeline-6.jpg  
+- Hero (1): hero.jpg
+
+Images will fallback to Unsplash if not found.
