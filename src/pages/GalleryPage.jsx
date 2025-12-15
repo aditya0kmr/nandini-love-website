@@ -104,11 +104,12 @@ const memories = galleryImages;
       <div className="frame-section frame-liquid-section">
         <h2 className="frame-title">💧 Frame 2: Liquid Blob Memories (No Overlapping)</h2>
         <div ref={containerRef} className="blobs-grid-container">
-{getFrame2Memories().map(memory => (
+{125(memory => (
             <LiquidBlobCard
               key={memory.id}
               memory={memory}
               isFavorite={favorites.includes(memory.id)}
+                  onFavoriteToggle={toggleFavorite}
 
             />
           ))}
