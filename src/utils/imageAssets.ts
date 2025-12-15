@@ -1,76 +1,77 @@
 /**
  * Image Assets Configuration
  * Central repository for all image paths and metadata
- * Updated: Dec 15, 2025 - Fixed paths for production deployment
+ * Updated: Dec 15, 2025 - Mapped to actual uploaded images
  */
 
 // Gallery Images (8 images for carousel)
 export const galleryImages = [
   {
     id: 1,
-    text: 'Our First Beach Sunset nanniii',
-    image: '/assets/images/gallery-1.jpg',
+    text: "Our First Beach Sunset nannii",
+    image: '/assets/images/1000068755.png',
     carouselAngle: 0
   },
   {
     id: 2,
-    text: "nanniii's Beautiful Smile aadi",
-    image: '/assets/images/gallery-2.jpg',
+    text: "nannii's Beautiful Smile aadi",
+    image: '/assets/images/1000076848.jpg',
     carouselAngle: 72
   },
   {
     id: 3,
-    text: 'First Date Magic Forever',
-    image: '/assets/images/gallery-3.jpg',
+    text: "First Date Magic Forever",
+    image: '/assets/images/1000077368.jpg',
     carouselAngle: 144
   },
   {
     id: 4,
-    text: 'Holding Hands Forever',
-    image: '/assets/images/gallery-4.jpg',
+    text: "Adventure Together 🏄",
+    image: '/assets/images/1000078218.heic',
     carouselAngle: 216
   },
   {
     id: 5,
-    text: 'Adventure Together',
-    image: '/assets/images/gallery-5.jpg',
+    text: "Sunset Romance 🌟",
+    image: '/assets/images/1000078638.jpg',
     carouselAngle: 288
   },
   {
     id: 6,
-    text: 'aadi Forever',
-    image: '/assets/images/gallery-6.jpg',
+    text: "aadi Forever",
+    image: '/assets/images/1000078643.jpg',
     carouselAngle: 0
   },
   {
     id: 7,
-    text: 'Sunset at the Mountains',
-    image: '/assets/images/gallery-7.jpg',
-    carouselAngle: 0
+    text: "Mountain Sunset 🎴",
+    image: '/assets/images/1000079164.jpg',
+    carouselAngle: 72
   },
   {
     id: 8,
-    text: 'Starry Night Together',
-    image: '/assets/images/gallery-8.jpg',
-    carouselAngle: 0
+    text: "Starry Night Together ⭐",
+    image: '/assets/images/1000080950.jpg',
+    carouselAngle: 144
   }
 ];
 
 // Timeline Images (6 milestones)
 export const timelineImages = {
-  'First Meeting': '/assets/images/timeline-1.jpg',
-  'First Date': '/assets/images/timeline-2.jpg',
-  'First Kiss': '/assets/images/timeline-3.jpg',
-  'Getting Closer': '/assets/images/timeline-4.jpg',
-  'The Promise': '/assets/images/timeline-5.jpg',
-  'Our Future': '/assets/images/timeline-6.jpg'
+  'First Meeting': '/assets/images/1000083533.jpg',
+  'First Date': '/assets/images/1000083581.heic',
+  'First Kiss': '/assets/images/1000083804.jpg',
+  'Getting Closer': '/assets/images/1000084230.jpg',
+  'The Promise': '/assets/images/1000084362.heic',
+  'Our Future': '/assets/images/1000097810.jpg'
 };
 
-// Home Page Hero
-export const homeHeroImage = '/assets/images/hero.jpg';
+// Hero Image
+export const heroImage = '/assets/images/Snapchat-1687117536.jpg';
 
-// Summary: Total images needed = 15
-// Gallery: 8 images
-// Timeline: 6 images
-// Hero: 1 image
-// All images should be placed in public/assets/images/ folder
+// Backup images if primary ones fail
+export const fallbackImages = {
+  gallery: '/assets/images/1000068755.png',
+  timeline: '/assets/images/1000083533.jpg',
+  hero: '/assets/images/Snapchat-1687117536.jpg'
+};
