@@ -233,7 +233,7 @@ const LiquidBlobCard = ({ memory, isFavorite, onFavoriteToggle }) => {
     <article className="blob-card">
       <div className="blob-image-wrapper">
         <img
-          src={memory.src}
+          src={memory.image}
           alt={memory.title}
           className="blob-image"
           loading="lazy"
