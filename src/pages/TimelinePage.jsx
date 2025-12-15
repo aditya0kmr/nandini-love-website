@@ -1,5 +1,7 @@
 import './TimelinePage.css';
+import { timelineImages } from '../utils/imageAssets';
 
+// Timeline images available at: timelineImages.['First Meeting'], ['First Date'], ['First Kiss'], ['Getting Closer'], ['The Promise'], ['Our Future']
 const timelineData = [
   {
     id: 1,
