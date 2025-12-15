@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GalleryPage.css';
-import { galleryImages } from '../utils/imageAssets, frame2Memories, getNewMemories, getMemoriesByCategory, getSortedMemories }
+import { galleryImages, frame2Memories, getNewMemories, getMemoriesByCategory, getSortedMemories } from '../utils/imageAssets';
 
 const GalleryPage = () => {
   const navigate = useNavigate();
