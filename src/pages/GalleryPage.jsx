@@ -191,6 +191,78 @@ const LiquidBlobCard = ({ memory, isFavorite, onFavoriteToggle }) => {
         </div>
       </div>
     </div>
+    
+    {/* Frame 2: Liquid Blob Memories */}
+    <section className="frame2-section">
+      <h2>\ud83d\udc95 Frame 2: Liquid Blob Memories</h2>
+
+      {/* Filters */}
+      <div className="frame2-filters">
+        <button
+          className={frame2Filter === 'all' ? 'active' : ''}
+          onClick={() => setFrame2Filter('all')}
+        >
+          All
+        </button>
+        <button
+          className={frame2Filter === 'new' ? 'active' : ''}
+          onClick={() => setFrame2Filter('new')}
+        >
+          Just Added Today
+        </button>
+        <button
+          className={frame2Filter === 'romantic' ? 'active' : ''}
+          onClick={() => setFrame2Filter('romantic')}
+        >
+          Romantic
+        </button>
+        <button
+          className={frame2Filter === 'adventure' ? 'active' : ''}
+          onClick={() => setFrame2Filter('adventure')}
+        >
+          Adventure
+        </button>
+      </div>
+
+      {/* Grid / Timeline toggle */}
+      <div className="frame2-display-toggle">
+        <button
+          className={frame2DisplayMode === 'grid' ? 'active' : ''}
+          onClick={() => setFrame2DisplayMode('grid')}
+        >
+          Grid
+        </button>
+        <button
+          className={frame2DisplayMode === 'timeline' ? 'active' : ''}
+          onClick={() => setFrame2DisplayMode('timeline')}
+        >
+          Timeline
+        </button>
+      </div>
+
+      <div className={`frame2-memories frame2-memories--${frame2DisplayMode}`}>
+        {getFrame2Memories().map(memory => (
+          <article key={memory.id} className="blob-card">
+            <div className="blob-image-wrapper">
+              <img
+                src={memory.src}
+                alt={memory.title}
+                className="blob-image"
+              />
+              {memory.isNew && <span className="badge-new">\ud83c\udd86 New</span>}
+            </div>
+            <div className="blob-content">
+              <h3>{memory.title}</h3>
+              <p>{memory.caption}</p>
+              <div className="blob-meta">
+                <span>{memory.dateLabel}</span>
+                <span>{memory.categoryLabel}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 };
 
