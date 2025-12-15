@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GalleryPage.css';
-import { galleryImages } from '../utils/imageAssets';
+import { galleryImages } from '../utils/imageAssets, frame2Memories, getNewMemories, getMemoriesByCategory, getSortedMemories }
 
 const GalleryPage = () => {
   const navigate = useNavigate();
@@ -13,6 +13,15 @@ const GalleryPage = () => {
   // Using local images from src/assets/images/, fallback to Unsplash if local fails
 const memories = galleryImages;
 
+ // Get filtered Frame 2 memories based on selected filter
+ const getFrame2Memories = () => {
+   if (frame2Filter === 'all') return frame2Memories;
+   if (frame2Filter === 'new') return getNewMemories();
+   return getMemoriesByCategory(frame2Filter);
+ };
+
+ const [frame2Filter, setFrame2Filter] = useState('all');
+ const [frame2DisplayMode, setFrame2DisplayMode] = useState('grid'); // 'grid' or 'timeline'
   useEffect(() => {
     const saved = localStorage.getItem('galleryFavorites');
     if (saved) setFavorites(JSON.parse(saved));
@@ -84,15 +93,23 @@ const memories = galleryImages;
         </div>
       </div>
 
+           {/* Frame 2 Enhanced with Smart Filters & 'New' Showcase */}
+     <div className="frame2-filter-buttons" style={{display: 'flex', gap: '10px', margin: '20px 0', justifyContent: 'center', flexWrap: 'wrap'}}>
+       <button onClick={() => setFrame2Filter('new')} style={{padding: '8px 16px', borderRadius: '20px', border: frame2Filter === 'new' ? '2px solid #e63946' : '1px solid #ccc', background: frame2Filter === 'new' ? '#ffe0e6' : 'transparent', cursor: 'pointer'}}>🆕 Just Added Today</button>
+       <button onClick={() => setFrame2Filter('all')} style={{padding: '8px 16px', borderRadius: '20px', border: frame2Filter === 'all' ? '2px solid #a8d8ea' : '1px solid #ccc', background: frame2Filter === 'all' ? '#d4f1f9' : 'transparent', cursor: 'pointer'}}>✨ All Memories</button>
+       <button onClick={() => setFrame2Filter('romantic')} style={{padding: '8px 16px', borderRadius: '20px', border: frame2Filter === 'romantic' ? '2px solid #f8614f' : '1px solid #ccc', background: frame2Filter === 'romantic' ? '#ffe5e0' : 'transparent', cursor: 'pointer'}}>💕 Romantic</button>
+       <button onClick={() => setFrame2Filter('intimate')} style={{padding: '8px 16px', borderRadius: '20px', border: frame2Filter === 'intimate' ? '2px solid #ff69b4' : '1px solid #ccc', background: frame2Filter === 'intimate' ? '#ffe0f0' : 'transparent', cursor: 'pointer'}}>😍 Intimate</button>
+       <button onClick={() => setFrame2Filter('adventure')} style={{padding: '8px 16px', borderRadius: '20px', border: frame2Filter === 'adventure' ? '2px solid #4a7c59' : '1px solid #ccc', background: frame2Filter === 'adventure' ? '#d9f0e0' : 'transparent', cursor: 'pointer'}}>🏔️ Adventure</button>
+     </div>
       <div className="frame-section frame-liquid-section">
         <h2 className="frame-title">💧 Frame 2: Liquid Blob Memories (No Overlapping)</h2>
         <div ref={containerRef} className="blobs-grid-container">
-          {memories.map(memory => (
+{getFrame2Memories().map(memory => (
             <LiquidBlobCard
               key={memory.id}
               memory={memory}
               isFavorite={favorites.includes(memory.id)}
-              onFavoriteToggle={toggleFavorite}
+
             />
           ))}
         </div>
