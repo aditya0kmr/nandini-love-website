@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './GalleryPage.css';
+import { galleryImages } from '../utils/imageAssets';
 
 const GalleryPage = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const GalleryPage = () => {
   const [favorites, setFavorites] = useState([]);
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0);
 
+  // Using local images from src/assets/images/, fallback to Unsplash if local fails
   const memories = [
     { id: 1, text: 'Our First Beach Sunset 🌅 nanniii', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500', carouselAngle: 0 },
     { id: 2, text: "nanniii's Beautiful Smile 😍 aadi", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500', carouselAngle: 72 },
