@@ -176,6 +176,7 @@ const LiquidBlobCard = ({ memory, isFavorite, onFavoriteToggle }) => {
   };
 
   return (
+    <>
     <div className="liquid-blob-card-grid">
       <div className="blob-wrapper">
         <img src={memory.image} alt={memory.text} className="blob-image" loading="lazy" />
@@ -263,6 +264,7 @@ const LiquidBlobCard = ({ memory, isFavorite, onFavoriteToggle }) => {
         ))}
       </div>
     </section>
+          </>
   );
 };
 
