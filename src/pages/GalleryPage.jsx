@@ -11,16 +11,7 @@ const GalleryPage = () => {
   const [currentCarouselImage, setCurrentCarouselImage] = useState(0);
 
   // Using local images from src/assets/images/, fallback to Unsplash if local fails
-  const memories = [
-    { id: 1, text: 'Our First Beach Sunset 🌅 nanniii', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500', carouselAngle: 0 },
-    { id: 2, text: "nanniii's Beautiful Smile 😍 aadi", image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=500', carouselAngle: 72 },
-    { id: 3, text: 'First Date Magic ✨ Forever', image: 'https://images.unsplash.com/photo-1516589178581-a70e2083893c?w=500', carouselAngle: 144 },
-    { id: 4, text: 'Holding Hands Forever 💕', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=500', carouselAngle: 216 },
-    { id: 5, text: 'Adventure Together 🏔️', image: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=500', carouselAngle: 288 },
-    { id: 6, text: 'aadi ❤️ nanniii Forever', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500', carouselAngle: 0 },
-        { id: 7, text: 'Sunset at the Mountains 🌅', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500', carouselAngle: 0 },
-        { id: 8, text: 'Starry Night Together ⭐', image: 'https://images.unsplash.com/photo-1444080748397-f442aa95c3e5?w=500', carouselAngle: 0 }
-  ];
+const memories = galleryImages;
 
   useEffect(() => {
     const saved = localStorage.getItem('galleryFavorites');
